@@ -59,7 +59,7 @@ const ParticipantList = ({ participants, onVerify, searchQuery }: ParticipantLis
       case "invalid":
         return "Invalid"
       default:
-        return status // Show the actual status value for debugging
+        return status
     }
   }
 
@@ -79,88 +79,161 @@ const ParticipantList = ({ participants, onVerify, searchQuery }: ParticipantLis
           <p>{searchQuery ? `Tidak ada peserta dengan nama "${searchQuery}"` : "Belum ada data peserta"}</p>
         </div>
       ) : (
-        <div className="participants-table">
-          <div className="table-header">
-            <div className="header-cell">Peserta</div>
-            <div className="header-cell">Kontak</div>
-            <div className="header-cell">Status Langganan</div>
-            <div className="header-cell">Status Verifikasi</div>
-            <div className="header-cell">Aksi</div>
-            <div className="header-cell">Tanggal Verifikasi</div>
+        <>
+          {/* Desktop Table View */}
+          <div className="participants-table">
+            <div className="table-header">
+              <div className="header-cell">No</div>
+              <div className="header-cell">Peserta</div>
+              <div className="header-cell">Kontak</div>
+              <div className="header-cell">Status Langganan</div>
+              <div className="header-cell">Status Verifikasi</div>
+              <div className="header-cell">Aksi</div>
+              <div className="header-cell">Tanggal Verifikasi</div>
+            </div>
+
+            {participants.map((participant, index) => (
+              <div key={participant.id} className="table-row">
+                {/* Nomor Column */}
+                <div className="cell number-cell">
+                  <div className="participant-number">{index + 1}</div>
+                </div>
+
+                {/* Peserta Column */}
+                <div className="cell participant-cell">
+                  <div className="participant-info">
+                    <div className="participant-name">{participant.name}</div>
+                  </div>
+                </div>
+
+                {/* Kontak Column */}
+                <div className="cell contact-cell">
+                  <div className="phone-number">
+                    <Phone size={16} />
+                    <span>{participant.phone}</span>
+                  </div>
+                </div>
+
+                {/* Status Langganan Column */}
+                <div className="cell subscription-cell">
+                  <div className="subscription-badge">
+                    <span className={`subscription-text ${participant.subscription}`}>
+                      {getSubscriptionText(participant.subscription)}
+                    </span>
+                  </div>
+                </div>
+
+                {/* Status Verifikasi Column */}
+                <div className="cell status-cell">
+                  <div className="status-container">
+                    {getStatusIcon(participant.status)}
+                    <span className={`status-text ${participant.status}`}>{getStatusText(participant.status)}</span>
+                  </div>
+                </div>
+
+                {/* Aksi Column */}
+                <div className="cell action-cell">
+                  {participant.status === "pending" && (
+                    <div className="action-buttons">
+                      <button className="btn-verify" onClick={() => onVerify(participant.id, "verify")}>
+                        Verifikasi
+                      </button>
+                      <button className="btn-reject" onClick={() => onVerify(participant.id, "reject")}>
+                        Tolak
+                      </button>
+                    </div>
+                  )}
+                  {participant.status !== "pending" && (
+                    <div className="status-completed">
+                      <span className="completed-text">Selesai</span>
+                    </div>
+                  )}
+                </div>
+
+                {/* Tanggal Verifikasi Column */}
+                <div className="cell date-cell">
+                  {participant.status === "verified" && participant.verified_at ? (
+                    <div className="verification-date">
+                      <div className="date-label">Diverifikasi:</div>
+                      <div className="date-value">{formatDateTime(participant.verified_at)}</div>
+                    </div>
+                  ) : participant.status === "rejected" && participant.verified_at ? (
+                    <div className="rejection-date">
+                      <div className="date-label">Ditolak:</div>
+                      <div className="date-value rejected">{formatDateTime(participant.verified_at)}</div>
+                    </div>
+                  ) : (
+                    <div className="pending-date">
+                      <span className="pending-label">-</span>
+                    </div>
+                  )}
+                </div>
+              </div>
+            ))}
           </div>
 
-          {participants.map((participant) => (
-            <div key={participant.id} className="table-row">
-              {/* Peserta Column */}
-              <div className="cell participant-cell">
-                <div className="participant-name">{participant.name}</div>
-              </div>
-
-              {/* Kontak Column */}
-              <div className="cell contact-cell">
-                <div className="phone-number">
-                  <Phone size={16} />
-                  <span>{participant.phone}</span>
+          {/* Mobile Card View */}
+          {participants.map((participant, index) => (
+            <div key={`mobile-${participant.id}`} className="mobile-card">
+              <div className="mobile-card-header">
+                <div className="mobile-participant-info">
+                  <div className="mobile-participant-name">{participant.name}</div>
+                  <div className="mobile-phone">
+                    <Phone size={16} />
+                    <span>{participant.phone}</span>
+                  </div>
                 </div>
+                <div className="mobile-participant-number">#{index + 1}</div>
               </div>
 
-              {/* Status Langganan Column - Read only from database */}
-              <div className="cell subscription-cell">
-                <div className="subscription-badge">
-                  <span className={`subscription-text ${participant.subscription}`}>
-                    {getSubscriptionText(participant.subscription)}
-                  </span>
+              <div className="mobile-card-content">
+                <div className="mobile-field">
+                  <div className="mobile-field-label">Status Langganan</div>
+                  <div className="mobile-field-value">
+                    <span className={`subscription-text ${participant.subscription}`}>
+                      {getSubscriptionText(participant.subscription)}
+                    </span>
+                  </div>
                 </div>
-              </div>
 
-              {/* Status Verifikasi Column */}
-              <div className="cell status-cell">
-                <div className="status-container">
-                  {getStatusIcon(participant.status)}
-                  <span className={`status-text ${participant.status}`}>{getStatusText(participant.status)}</span>
+                <div className="mobile-field">
+                  <div className="mobile-field-label">Status Verifikasi</div>
+                  <div className="mobile-field-value">
+                    <div className="status-container">
+                      {getStatusIcon(participant.status)}
+                      <span className={`status-text ${participant.status}`}>{getStatusText(participant.status)}</span>
+                    </div>
+                  </div>
                 </div>
+
+                {(participant.status === "verified" || participant.status === "rejected") &&
+                  participant.verified_at && (
+                    <div className="mobile-field" style={{ gridColumn: "1 / -1" }}>
+                      <div className="mobile-field-label">
+                        {participant.status === "verified" ? "Tanggal Verifikasi" : "Tanggal Penolakan"}
+                      </div>
+                      <div className="mobile-field-value">
+                        <span className={participant.status === "rejected" ? "rejected" : ""}>
+                          {formatDateTime(participant.verified_at)}
+                        </span>
+                      </div>
+                    </div>
+                  )}
               </div>
 
-              {/* Aksi Column */}
-              <div className="cell action-cell">
-                {participant.status === "pending" && (
-                  <div className="action-buttons">
-                    <button className="btn-verify" onClick={() => onVerify(participant.id, "verify")}>
-                      Verifikasi
-                    </button>
-                    <button className="btn-reject" onClick={() => onVerify(participant.id, "reject")}>
-                      Tolak
-                    </button>
-                  </div>
-                )}
-                {participant.status !== "pending" && (
-                  <div className="status-completed">
-                    <span className="completed-text">Selesai</span>
-                  </div>
-                )}
-              </div>
-
-              {/* Tanggal Verifikasi Column */}
-              <div className="cell date-cell">
-                {participant.status === "verified" && participant.verified_at ? (
-                  <div className="verification-date">
-                    <div className="date-label">Diverifikasi:</div>
-                    <div className="date-value">{formatDateTime(participant.verified_at)}</div>
-                  </div>
-                ) : participant.status === "rejected" && participant.verified_at ? (
-                  <div className="rejection-date">
-                    <div className="date-label">Ditolak:</div>
-                    <div className="date-value rejected">{formatDateTime(participant.verified_at)}</div>
-                  </div>
-                ) : (
-                  <div className="pending-date">
-                    <span className="pending-label">-</span>
-                  </div>
-                )}
-              </div>
+              {participant.status === "pending" && (
+                <div className="mobile-card-actions">
+                  <button className="btn-verify" onClick={() => onVerify(participant.id, "verify")}>
+                    Verifikasi
+                  </button>
+                  <button className="btn-reject" onClick={() => onVerify(participant.id, "reject")}>
+                    Tolak
+                  </button>
+                </div>
+              )}
             </div>
           ))}
-        </div>
+        </>
       )}
     </div>
   )

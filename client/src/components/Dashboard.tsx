@@ -15,15 +15,17 @@ const Dashboard = ({ participants, activities }: DashboardProps) => {
   const verified = participants.filter((p) => p.status === "verified").length
   const pending = participants.filter((p) => p.status === "pending").length
   const rejected = participants.filter((p) => p.status === "rejected").length
-  const subscribed = participants.filter((p) => p.subscription === "active").length
-  const unsubscribed = participants.filter((p) => p.subscription === "inactive").length
+  const subscribed = participants.filter((p) => p.subscription === "active" || p.subscription === "subscribe").length
+  const unsubscribed = participants.filter((p) => p.subscription === "unsubscribe").length
+  const inactive = participants.filter((p) => p.subscription === "inactive").length
 
-  // Calculate percentage changes (mock calculation for demo)
+  // Calculate percentage changes
   const verificationRate = total > 0 ? Math.round((verified / total) * 100) : 0
   const pendingRate = total > 0 ? Math.round((pending / total) * 100) : 0
   const subscriptionRate = total > 0 ? Math.round((subscribed / total) * 100) : 0
 
-  const stats = [
+  // Section 1: Total Participants
+  const totalStats = [
     {
       title: "Total Peserta",
       value: total.toString(),
@@ -32,6 +34,10 @@ const Dashboard = ({ participants, activities }: DashboardProps) => {
       icon: Users,
       color: "blue",
     },
+  ]
+
+  // Section 2: Verification Status
+  const verificationStats = [
     {
       title: "Terverifikasi",
       value: verified.toString(),
@@ -44,7 +50,7 @@ const Dashboard = ({ participants, activities }: DashboardProps) => {
       title: "Pending",
       value: pending.toString(),
       change: `${pendingRate}% menunggu`,
-      changeType: (pending > 0 ? "negative" : "positive") as "positive" | "negative", // ✅ FIX di sini
+      changeType: (pending > 0 ? "negative" : "positive") as "positive" | "negative",
       icon: Clock,
       color: "orange",
     },
@@ -56,6 +62,10 @@ const Dashboard = ({ participants, activities }: DashboardProps) => {
       icon: AlertCircle,
       color: "red",
     },
+  ]
+
+  // Section 3: Subscription Status
+  const subscriptionStats = [
     {
       title: "Berlangganan",
       value: subscribed.toString(),
@@ -67,7 +77,15 @@ const Dashboard = ({ participants, activities }: DashboardProps) => {
     {
       title: "Tidak Berlangganan",
       value: unsubscribed.toString(),
-      change: `${Math.round((unsubscribed / total) * 100)}% tidak aktif`,
+      change: `${Math.round((unsubscribed / total) * 100)}% tidak berlangganan`,
+      changeType: "negative" as const,
+      icon: AlertCircle,
+      color: "red",
+    },
+    {
+      title: "Tidak Aktif",
+      value: inactive.toString(),
+      change: `${Math.round((inactive / total) * 100)}% tidak aktif`,
       changeType: "negative" as const,
       icon: AlertCircle,
       color: "red",
@@ -81,10 +99,36 @@ const Dashboard = ({ participants, activities }: DashboardProps) => {
         <p>Monitor status verifikasi peserta dan aktivitas</p>
       </div>
 
-      <div className="stats-grid">
-        {stats.map((stat, index) => (
-          <StatsCard key={index} {...stat} />
-        ))}
+      <div className="dashboard-sections">
+        {/* Section 1: Total Participants */}
+        <div className="dashboard-section">
+          <h2 className="section-title">Total Peserta</h2>
+          <div className="section-cards single">
+            {totalStats.map((stat, index) => (
+              <StatsCard key={index} {...stat} />
+            ))}
+          </div>
+        </div>
+
+        {/* Section 2: Verification Status */}
+        <div className="dashboard-section">
+          <h2 className="section-title">Status Verifikasi</h2>
+          <div className="section-cards triple">
+            {verificationStats.map((stat, index) => (
+              <StatsCard key={index} {...stat} />
+            ))}
+          </div>
+        </div>
+
+        {/* Section 3: Subscription Status */}
+        <div className="dashboard-section">
+          <h2 className="section-title">Status Langganan</h2>
+          <div className="section-cards triple">
+            {subscriptionStats.map((stat, index) => (
+              <StatsCard key={index} {...stat} />
+            ))}
+          </div>
+        </div>
       </div>
 
       <div className="dashboard-content">
