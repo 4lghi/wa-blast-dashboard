@@ -12,7 +12,7 @@ const router = express.Router();
 router.get("/", getAllNasabah);
 router.get("/:id", getNasabahById);
 router.post("/", createNasabah);
-router.put("/:id", updateNasabah);
+router.patch("/:id", updateNasabah);
 router.delete("/:id", deleteNasabah);
 
 export default router;

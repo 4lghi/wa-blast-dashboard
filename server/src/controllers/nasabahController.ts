@@ -81,6 +81,7 @@ export const updateNasabah = async (req: Request, res: Response) => {
   }
 };
 
+
 // 🔹 DELETE nasabah
 export const deleteNasabah = async (req: Request, res: Response) => {
   const { id } = req.params;
