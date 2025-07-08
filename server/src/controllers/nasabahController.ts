@@ -15,9 +15,10 @@ export const getAllNasabah = async (req: Request, res: Response) => {
   }
 };
 
-// 🔹 GET nasabah berdasarkan ID
-export const getNasabahById = async (req: Request, res: Response) => {
+// 🔹 GET nasabah by ID
+export const getNasabahById: RequestHandler = async (req, res) => {
   const { id } = req.params;
+
   try {
     const nasabah = await prisma.nasabah.findUnique({
       where: { id },
@@ -25,14 +26,15 @@ export const getNasabahById = async (req: Request, res: Response) => {
     });
 
     if (!nasabah) {
-      return res.status(404).json({ error: "Nasabah tidak ditemukan." });
+      res.status(404).json({ error: "Nasabah tidak ditemukan." });
+    } else {
+      res.json(nasabah);
     }
-
-    return res.json(nasabah);
   } catch (error) {
-    return res.status(500).json({ error: "Gagal mengambil data nasabah." });
+    res.status(500).json({ error: "Terjadi kesalahan server." });
   }
 };
+
 
 // 🔹 POST create new nasabah
 export const createNasabah = async (req: Request, res: Response) => {
