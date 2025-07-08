@@ -76,7 +76,7 @@ function App() {
           ? {
               ...p,
               status: action === "verify" ? "verified" : "rejected",
-              verified_at: action === "verify" ? new Date().toISOString() : null,
+              verified_at: new Date().toISOString(), // Set date for both verify and reject
             }
           : p,
       ),

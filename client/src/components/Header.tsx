@@ -1,6 +1,6 @@
 "use client"
 
-import { Search, Bell } from "lucide-react"
+import { Search } from "lucide-react"
 
 interface HeaderProps {
   searchQuery: string
@@ -23,13 +23,6 @@ const Header = ({ searchQuery, setSearchQuery, showSearch = true }: HeaderProps)
           />
         </div>
       )}
-
-      <div className="header-actions">
-        <button className="header-btn">
-          <Bell size={20} />
-          <span className="notification-badge">3</span>
-        </button>
-      </div>
     </header>
   )
 }
