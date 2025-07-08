@@ -1,0 +1,32 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model users {
+  id        String     @id @default(cuid())
+  email     String     @unique
+  name      String
+  password  String
+  createdAt DateTime   @default(now())
+  updatedAt DateTime
+  nasabah   nasabah[]  // ⬅️ satu user bisa punya banyak nasabah
+}
+
+model nasabah {
+  id               String   @id @default(cuid())
+  nama             String
+  no_hp            String
+  status           String
+  status_langganan String
+  nik              String   @unique
+  no_kpj           String   @unique
+  updatedAt        DateTime @updatedAt
+
+  userId           String      // ⬅️ foreign key ke tabel users
+  user             users       @relation(fields: [userId], references: [id])
+}
