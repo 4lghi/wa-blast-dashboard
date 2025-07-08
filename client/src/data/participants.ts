@@ -10,6 +10,7 @@ export interface Participant {
   contacted_at: string
   verified_at: string | null
   created_at: string
+  subscription: "subscribe" | "unsubscribe" | "inactive" | "active"
 }
 
 // Simple dummy data - easy to replace with database queries
@@ -23,6 +24,7 @@ export const dummyParticipants: Participant[] = [
     contacted_at: "2024-01-08T10:30:00Z",
     verified_at: null,
     created_at: "2024-01-08T10:30:00Z",
+    subscription: "subscribe",
   },
   {
     id: 2,
@@ -33,6 +35,7 @@ export const dummyParticipants: Participant[] = [
     contacted_at: "2024-01-08T09:15:00Z",
     verified_at: "2024-01-08T11:20:00Z",
     created_at: "2024-01-08T09:15:00Z",
+    subscription: "subscribe",
   },
   {
     id: 3,
@@ -43,6 +46,7 @@ export const dummyParticipants: Participant[] = [
     contacted_at: "2024-01-08T08:45:00Z",
     verified_at: null,
     created_at: "2024-01-08T08:45:00Z",
+    subscription: "unsubscribe",
   },
   {
     id: 4,
@@ -53,6 +57,7 @@ export const dummyParticipants: Participant[] = [
     contacted_at: "2024-01-08T12:00:00Z",
     verified_at: null,
     created_at: "2024-01-08T12:00:00Z",
+    subscription: "subscribe",
   },
   {
     id: 5,
@@ -63,6 +68,7 @@ export const dummyParticipants: Participant[] = [
     contacted_at: "2024-01-08T07:30:00Z",
     verified_at: "2024-01-08T10:45:00Z",
     created_at: "2024-01-08T07:30:00Z",
+    subscription: "subscribe",
   },
   {
     id: 6,
@@ -73,6 +79,7 @@ export const dummyParticipants: Participant[] = [
     contacted_at: "2024-01-08T13:15:00Z",
     verified_at: null,
     created_at: "2024-01-08T13:15:00Z",
+    subscription: "subscribe",
   },
   {
     id: 7,
@@ -83,6 +90,7 @@ export const dummyParticipants: Participant[] = [
     contacted_at: "2024-01-08T06:20:00Z",
     verified_at: "2024-01-08T09:30:00Z",
     created_at: "2024-01-08T06:20:00Z",
+    subscription: "subscribe",
   },
   {
     id: 8,
@@ -93,6 +101,7 @@ export const dummyParticipants: Participant[] = [
     contacted_at: "2024-01-08T14:00:00Z",
     verified_at: null,
     created_at: "2024-01-08T14:00:00Z",
+    subscription: "unsubscribe",
   },
   {
     id: 9,
@@ -103,6 +112,7 @@ export const dummyParticipants: Participant[] = [
     contacted_at: "2024-01-08T15:30:00Z",
     verified_at: null,
     created_at: "2024-01-08T15:30:00Z",
+    subscription: "subscribe",
   },
   {
     id: 10,
@@ -113,47 +123,28 @@ export const dummyParticipants: Participant[] = [
     contacted_at: "2024-01-08T05:45:00Z",
     verified_at: "2024-01-08T08:15:00Z",
     created_at: "2024-01-08T05:45:00Z",
+    subscription: "subscribe",
+  },
+  {
+    id: 11,
+    name: "Rudi Hermawan",
+    phone: "+6281234567800",
+    status: "pending",
+    chatbot_response: "Saya perlu waktu untuk mempertimbangkan",
+    contacted_at: "2024-01-08T16:00:00Z",
+    verified_at: null,
+    created_at: "2024-01-08T16:00:00Z",
+    subscription: "inactive",
+  },
+  {
+    id: 12,
+    name: "Sari Indah",
+    phone: "+6281234567801",
+    status: "verified",
+    chatbot_response: "Saya siap bergabung",
+    contacted_at: "2024-01-08T17:00:00Z",
+    verified_at: "2024-01-08T17:30:00Z",
+    created_at: "2024-01-08T17:00:00Z",
+    subscription: "inactive",
   },
 ]
-
-// Helper functions for statistics (easy to replace with database aggregations)
-export const getParticipantStats = () => {
-  const total = dummyParticipants.length
-  const verified = dummyParticipants.filter((p) => p.status === "verified").length
-  const pending = dummyParticipants.filter((p) => p.status === "pending").length
-  const rejected = dummyParticipants.filter((p) => p.status === "rejected").length
-
-  return { total, verified, pending, rejected }
-}
-
-export const getRecentActivity = () => {
-  return dummyParticipants
-    .sort((a, b) => new Date(b.contacted_at).getTime() - new Date(a.contacted_at).getTime())
-    .slice(0, 5)
-    .map((p) => ({
-      id: p.id,
-      type: p.status,
-      message:
-        p.status === "verified"
-          ? `${p.name} telah diverifikasi`
-          : p.status === "rejected"
-            ? `${p.name} ditolak verifikasinya`
-            : `${p.name} menunggu verifikasi`,
-      time: formatTimeAgo(p.contacted_at),
-    }))
-}
-
-// Simple time formatting function
-const formatTimeAgo = (dateString: string) => {
-  const now = new Date()
-  const date = new Date(dateString)
-  const diffInMinutes = Math.floor((now.getTime() - date.getTime()) / (1000 * 60))
-
-  if (diffInMinutes < 60) {
-    return `${diffInMinutes} menit yang lalu`
-  } else if (diffInMinutes < 1440) {
-    return `${Math.floor(diffInMinutes / 60)} jam yang lalu`
-  } else {
-    return `${Math.floor(diffInMinutes / 1440)} hari yang lalu`
-  }
-}
