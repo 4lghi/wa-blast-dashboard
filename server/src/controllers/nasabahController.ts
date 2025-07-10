@@ -1,4 +1,4 @@
-import { Request, Response, RequestHandler } from "express";
+import { Request, Response } from "express";
 import { PrismaClient } from "@prisma/client";
 
 const prisma = new PrismaClient();
@@ -16,7 +16,7 @@ export const getAllNasabah = async (req: Request, res: Response) => {
 };
 
 // 🔹 GET nasabah by ID
-export const getNasabahById: RequestHandler = async (req, res) => {
+export const getNasabahById = async (req: Request, res: Response) => {
   const { id } = req.params;
 
   try {
