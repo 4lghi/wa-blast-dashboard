@@ -50,34 +50,43 @@ const RecentActivity = ({ activities }: RecentActivityProps) => {
 
   return (
     <div className="recent-activity">
-      <h3>Aktivitas Terbaru</h3>
-      <div className="activity-list">
-        {activities.length === 0 ? (
-          <div className="no-activity">
-            <p>Belum ada aktivitas</p>
+      <div className="activity-header">
+        <h3>Aktivitas Terbaru</h3>
+        <span className="activity-count-badge">{activities.length}</span>
+      </div>
+
+      <div className="activity-list-container">
+        <div className="activity-list scrollable">
+          {activities.length === 0 ? (
+            <div className="no-activity">
+              <p>Belum ada aktivitas</p>
+            </div>
+          ) : (
+            activities.map((activity) => {
+              const Icon = getIcon(activity.type)
+              return (
+                <div key={activity.id} className="activity-item">
+                  <div className={`activity-icon ${getIconClass(activity.type)}`}>
+                    <Icon size={16} />
+                  </div>
+                  <div className="activity-content">
+                    <div className="activity-message">{activity.message}</div>
+                    <div className="activity-time">{formatTimeAgo(activity.timestamp)}</div>
+                  </div>
+                </div>
+              )
+            })
+          )}
+        </div>
+
+        {activities.length > 0 && (
+          <div className="activity-scroll-indicator">
+            <div className="scroll-hint">
+              <span>Scroll untuk melihat lebih banyak</span>
+            </div>
           </div>
-        ) : (
-          activities.slice(0, 5).map((activity) => {
-            const Icon = getIcon(activity.type)
-            return (
-              <div key={activity.id} className="activity-item">
-                <div className={`activity-icon ${getIconClass(activity.type)}`}>
-                  <Icon size={16} />
-                </div>
-                <div className="activity-content">
-                  <div className="activity-message">{activity.message}</div>
-                  <div className="activity-time">{formatTimeAgo(activity.timestamp)}</div>
-                </div>
-              </div>
-            )
-          })
         )}
       </div>
-      {activities.length > 5 && (
-        <div className="activity-footer">
-          <p className="activity-count">+{activities.length - 5} aktivitas lainnya</p>
-        </div>
-      )}
     </div>
   )
 }
