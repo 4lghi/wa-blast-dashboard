@@ -1,7 +1,7 @@
 "use client"
 
 import { CheckCircle, XCircle, Clock, Phone } from "lucide-react"
-import type { Participant } from "../data/participants"
+import type { Participant } from "../types/participant"
 
 interface ParticipantListProps {
   participants: Participant[]
@@ -102,7 +102,7 @@ const ParticipantList = ({ participants, onVerify, searchQuery }: ParticipantLis
                 {/* Peserta Column */}
                 <div className="cell participant-cell">
                   <div className="participant-info">
-                    <div className="participant-name">{participant.name}</div>
+                    <div className="participant-name">{participant.nama}</div>
                   </div>
                 </div>
 
@@ -110,15 +110,15 @@ const ParticipantList = ({ participants, onVerify, searchQuery }: ParticipantLis
                 <div className="cell contact-cell">
                   <div className="phone-number">
                     <Phone size={16} />
-                    <span>{participant.phone}</span>
+                    <span>{participant.no_hp}</span>
                   </div>
                 </div>
 
                 {/* Status Langganan Column */}
                 <div className="cell subscription-cell">
                   <div className="subscription-badge">
-                    <span className={`subscription-text ${participant.subscription}`}>
-                      {getSubscriptionText(participant.subscription)}
+                    <span className={`subscription-text ${participant.status}`}>
+                      {getSubscriptionText(participant.status)}
                     </span>
                   </div>
                 </div>
@@ -126,14 +126,14 @@ const ParticipantList = ({ participants, onVerify, searchQuery }: ParticipantLis
                 {/* Status Verifikasi Column */}
                 <div className="cell status-cell">
                   <div className="status-container">
-                    {getStatusIcon(participant.status)}
-                    <span className={`status-text ${participant.status}`}>{getStatusText(participant.status)}</span>
+                    {getStatusIcon(participant.status_langganan)}
+                    <span className={`status-text ${participant.status_langganan}`}>{getStatusText(participant.status_langganan)}</span>
                   </div>
                 </div>
 
                 {/* Aksi Column */}
                 <div className="cell action-cell">
-                  {participant.status === "pending" && (
+                  {participant.status_langganan === "pending" && (
                     <div className="action-buttons">
                       <button className="btn-verify" onClick={() => onVerify(participant.idTable, "verify")}>
                         Verifikasi
@@ -143,7 +143,7 @@ const ParticipantList = ({ participants, onVerify, searchQuery }: ParticipantLis
                       </button>
                     </div>
                   )}
-                  {participant.status !== "pending" && (
+                  {participant.status_langganan !== "pending" && (
                     <div className="status-completed">
                       <span className="completed-text">Selesai</span>
                     </div>
@@ -152,15 +152,15 @@ const ParticipantList = ({ participants, onVerify, searchQuery }: ParticipantLis
 
                 {/* Tanggal Verifikasi Column */}
                 <div className="cell date-cell">
-                  {participant.status === "verified" && participant.verified_at ? (
+                  {participant.status_langganan === "verified" && participant.verifiedAt ? (
                     <div className="verification-date">
                       <div className="date-label">Diverifikasi:</div>
-                      <div className="date-value">{formatDateTime(participant.verified_at)}</div>
+                      <div className="date-value">{formatDateTime(participant.verifiedAt)}</div>
                     </div>
-                  ) : participant.status === "rejected" && participant.verified_at ? (
+                  ) : participant.status_langganan === "rejected" && participant.verifiedAt ? (
                     <div className="rejection-date">
                       <div className="date-label">Ditolak:</div>
-                      <div className="date-value rejected">{formatDateTime(participant.verified_at)}</div>
+                      <div className="date-value rejected">{formatDateTime(participant.verifiedAt)}</div>
                     </div>
                   ) : (
                     <div className="pending-date">
@@ -177,10 +177,10 @@ const ParticipantList = ({ participants, onVerify, searchQuery }: ParticipantLis
             <div key={`mobile-${participant.idTable}`} className="mobile-card">
               <div className="mobile-card-header">
                 <div className="mobile-participant-info">
-                  <div className="mobile-participant-name">{participant.name}</div>
+                  <div className="mobile-participant-name">{participant.nama}</div>
                   <div className="mobile-phone">
                     <Phone size={16} />
-                    <span>{participant.phone}</span>
+                    <span>{participant.no_hp}</span>
                   </div>
                 </div>
                 <div className="mobile-participant-number">#{index + 1}</div>
@@ -190,8 +190,8 @@ const ParticipantList = ({ participants, onVerify, searchQuery }: ParticipantLis
                 <div className="mobile-field">
                   <div className="mobile-field-label">Status Langganan</div>
                   <div className="mobile-field-value">
-                    <span className={`subscription-text ${participant.subscription}`}>
-                      {getSubscriptionText(participant.subscription)}
+                    <span className={`subscription-text ${participant.status}`}>
+                      {getSubscriptionText(participant.status)}
                     </span>
                   </div>
                 </div>
@@ -200,28 +200,28 @@ const ParticipantList = ({ participants, onVerify, searchQuery }: ParticipantLis
                   <div className="mobile-field-label">Status Verifikasi</div>
                   <div className="mobile-field-value">
                     <div className="status-container">
-                      {getStatusIcon(participant.status)}
-                      <span className={`status-text ${participant.status}`}>{getStatusText(participant.status)}</span>
+                      {getStatusIcon(participant.status_langganan)}
+                      <span className={`status-text ${participant.status_langganan}`}>{getStatusText(participant.status_langganan)}</span>
                     </div>
                   </div>
                 </div>
 
-                {(participant.status === "verified" || participant.status === "rejected") &&
-                  participant.verified_at && (
+                {(participant.status_langganan === "verified" || participant.status_langganan === "rejected") &&
+                  participant.verifiedAt && (
                     <div className="mobile-field" style={{ gridColumn: "1 / -1" }}>
                       <div className="mobile-field-label">
-                        {participant.status === "verified" ? "Tanggal Verifikasi" : "Tanggal Penolakan"}
+                        {participant.status_langganan === "verified" ? "Tanggal Verifikasi" : "Tanggal Penolakan"}
                       </div>
                       <div className="mobile-field-value">
-                        <span className={participant.status === "rejected" ? "rejected" : ""}>
-                          {formatDateTime(participant.verified_at)}
+                        <span className={participant.status_langganan === "rejected" ? "rejected" : ""}>
+                          {formatDateTime(participant.verifiedAt)}
                         </span>
                       </div>
                     </div>
                   )}
               </div>
 
-              {participant.status === "pending" && (
+              {participant.status_langganan === "pending" && (
                 <div className="mobile-card-actions">
                   <button className="btn-verify" onClick={() => onVerify(participant.idTable, "verify")}>
                     Verifikasi
