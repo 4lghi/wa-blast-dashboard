@@ -28,21 +28,21 @@ function App() {
     {
       id: "init-1",
       type: "verified",
-      message: "Siti Nurhaliza telah diverifikasi",
+      message: "Siti Nurhaliza has been verified",
       timestamp: "2024-01-08T11:20:00Z",
       participantName: "Siti Nurhaliza",
     },
     {
       id: "init-2",
       type: "verified",
-      message: "Dedi Kurniawan telah diverifikasi",
+      message: "Dedi Kurniawan has been verified",
       timestamp: "2024-01-08T10:45:00Z",
       participantName: "Dedi Kurniawan",
     },
     {
       id: "init-3",
       type: "rejected",
-      message: "Budi Santoso ditolak verifikasinya",
+      message: "Budi Santoso verification was rejected",
       timestamp: "2024-01-08T10:30:00Z",
       participantName: "Budi Santoso",
     },
@@ -58,7 +58,7 @@ function App() {
       id: `${Date.now()}-${Math.random()}`,
       type,
       message:
-        type === "verified" ? `${participantName} telah diverifikasi` : `${participantName} ditolak verifikasinya`,
+        type === "verified" ? `${participantName} has been verified` : `${participantName} verification was rejected`,
       timestamp: new Date().toISOString(),
       participantName,
     }
@@ -67,12 +67,12 @@ function App() {
   }
 
   const handleVerify = (id: number, action: "verify" | "reject") => {
-    const participant = participants.find((p) => p.id === id)
+    const participant = participants.find((p) => p.idTable === id)
     if (!participant) return
 
     setParticipants((prev) =>
       prev.map((p) =>
-        p.id === id
+        p.idTable === id
           ? {
               ...p,
               status: action === "verify" ? "verified" : "rejected",
