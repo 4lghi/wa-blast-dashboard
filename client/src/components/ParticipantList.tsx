@@ -135,10 +135,10 @@ const ParticipantList = ({ participants, onVerify, searchQuery }: ParticipantLis
                 <div className="cell action-cell">
                   {participant.status === "pending" && (
                     <div className="action-buttons">
-                      <button className="btn-verify" onClick={() => onVerify(participant.id, "verify")}>
+                      <button className="btn-verify" onClick={() => onVerify(participant.idTable, "verify")}>
                         Verifikasi
                       </button>
-                      <button className="btn-reject" onClick={() => onVerify(participant.id, "reject")}>
+                      <button className="btn-reject" onClick={() => onVerify(participant.idTable, "reject")}>
                         Tolak
                       </button>
                     </div>
@@ -174,7 +174,7 @@ const ParticipantList = ({ participants, onVerify, searchQuery }: ParticipantLis
 
           {/* Mobile Card View */}
           {participants.map((participant, index) => (
-            <div key={`mobile-${participant.id}`} className="mobile-card">
+            <div key={`mobile-${participant.idTable}`} className="mobile-card">
               <div className="mobile-card-header">
                 <div className="mobile-participant-info">
                   <div className="mobile-participant-name">{participant.name}</div>
@@ -223,10 +223,10 @@ const ParticipantList = ({ participants, onVerify, searchQuery }: ParticipantLis
 
               {participant.status === "pending" && (
                 <div className="mobile-card-actions">
-                  <button className="btn-verify" onClick={() => onVerify(participant.id, "verify")}>
+                  <button className="btn-verify" onClick={() => onVerify(participant.idTable, "verify")}>
                     Verifikasi
                   </button>
-                  <button className="btn-reject" onClick={() => onVerify(participant.id, "reject")}>
+                  <button className="btn-reject" onClick={() => onVerify(participant.idTable, "reject")}>
                     Tolak
                   </button>
                 </div>

@@ -8,13 +8,13 @@ datasource db {
 }
 
 model users {
-  id        String     @id @default(cuid())
-  email     String     @unique
+  id        String    @id @default(cuid())
+  email     String    @unique
   name      String
   password  String
-  createdAt DateTime   @default(now())
+  createdAt DateTime  @default(now())
   updatedAt DateTime
-  nasabah   nasabah[]  // ⬅️ satu user bisa punya banyak nasabah
+  nasabah   nasabah[]
 }
 
 model nasabah {
@@ -26,7 +26,8 @@ model nasabah {
   nik              String   @unique
   no_kpj           String   @unique
   updatedAt        DateTime @updatedAt
-
-  userId           String      // ⬅️ foreign key ke tabel users
-  user             users       @relation(fields: [userId], references: [id])
+  verifiedAt       DateTime? 
+  userId           String
+  isActive         Boolean  @default(true)
+  user             users    @relation(fields: [userId], references: [id])
 }

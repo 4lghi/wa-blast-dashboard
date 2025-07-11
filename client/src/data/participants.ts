@@ -2,7 +2,8 @@
 // This structure is simple and easy to replace with real database queries
 
 export interface Participant {
-  id: number
+  idTable: number
+  id: string
   name: string
   phone: string
   status: "pending" | "verified" | "rejected"
@@ -16,7 +17,8 @@ export interface Participant {
 // Simple dummy data - easy to replace with database queries
 export const dummyParticipants: Participant[] = [
   {
-    id: 1,
+    idTable: 1,
+    id: "1",
     name: "Ahmad Rizki",
     phone: "+6281234567890",
     status: "pending",
@@ -27,7 +29,8 @@ export const dummyParticipants: Participant[] = [
     subscription: "subscribe",
   },
   {
-    id: 2,
+    idTable: 1,
+    id: "1",
     name: "Siti Nurhaliza",
     phone: "+6281234567891",
     status: "verified",
@@ -38,7 +41,8 @@ export const dummyParticipants: Participant[] = [
     subscription: "subscribe",
   },
   {
-    id: 3,
+    idTable: 1,
+    id: "1",
     name: "Budi Santoso",
     phone: "+6281234567892",
     status: "rejected",
@@ -49,7 +53,8 @@ export const dummyParticipants: Participant[] = [
     subscription: "unsubscribe",
   },
   {
-    id: 4,
+    idTable: 1,
+    id: "1",
     name: "Maya Sari",
     phone: "+6281234567893",
     status: "pending",
@@ -60,7 +65,8 @@ export const dummyParticipants: Participant[] = [
     subscription: "subscribe",
   },
   {
-    id: 5,
+    idTable: 1,
+    id: "1",
     name: "Dedi Kurniawan",
     phone: "+6281234567894",
     status: "verified",
@@ -71,7 +77,8 @@ export const dummyParticipants: Participant[] = [
     subscription: "subscribe",
   },
   {
-    id: 6,
+    idTable: 1,
+    id: "1",
     name: "Rina Wati",
     phone: "+6281234567895",
     status: "pending",
@@ -82,7 +89,8 @@ export const dummyParticipants: Participant[] = [
     subscription: "subscribe",
   },
   {
-    id: 7,
+    idTable: 1,
+    id: "1",
     name: "Andi Pratama",
     phone: "+6281234567896",
     status: "verified",
@@ -93,7 +101,8 @@ export const dummyParticipants: Participant[] = [
     subscription: "subscribe",
   },
   {
-    id: 8,
+    idTable: 1,
+    id: "1",
     name: "Lina Marlina",
     phone: "+6281234567897",
     status: "rejected",
@@ -104,7 +113,8 @@ export const dummyParticipants: Participant[] = [
     subscription: "unsubscribe",
   },
   {
-    id: 9,
+    idTable: 1,
+    id: "1",
     name: "Hendra Wijaya",
     phone: "+6281234567898",
     status: "pending",
@@ -115,7 +125,8 @@ export const dummyParticipants: Participant[] = [
     subscription: "subscribe",
   },
   {
-    id: 10,
+    idTable: 1,
+    id: "1",
     name: "Dewi Sartika",
     phone: "+6281234567899",
     status: "verified",
@@ -126,7 +137,8 @@ export const dummyParticipants: Participant[] = [
     subscription: "subscribe",
   },
   {
-    id: 11,
+    idTable: 1,
+    id: "1",
     name: "Rudi Hermawan",
     phone: "+6281234567800",
     status: "pending",
@@ -137,7 +149,8 @@ export const dummyParticipants: Participant[] = [
     subscription: "inactive",
   },
   {
-    id: 12,
+    idTable: 1,
+    id: "1",
     name: "Sari Indah",
     phone: "+6281234567801",
     status: "verified",
