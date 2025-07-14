@@ -178,17 +178,19 @@ body {
   padding: 1rem 2rem;
   border-bottom: 1px solid #e2e8f0;
   display: flex;
-  justify-content: space-between;
+  justify-content: flex-start;
   align-items: center;
   position: sticky;
   top: 0;
   z-index: 100;
+  gap: 1rem;
 }
 
 .search-container {
   position: relative;
   flex: 1;
-  max-width: 400px;
+  max-width: none;
+  min-width: 300px;
 }
 
 .search-input {
@@ -200,6 +202,7 @@ body {
   background-color: #f8fafc;
   color: #1e293b;
   font-weight: 500;
+  transition: all 0.2s ease;
 }
 
 .search-input::placeholder {
@@ -246,7 +249,7 @@ body {
 /* Content */
 .content {
   flex: 1;
-  padding: 2rem;
+  padding: 1.5rem;
   overflow-y: auto;
 }
 
@@ -958,12 +961,13 @@ body {
   border-radius: 1rem;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
   overflow: hidden;
+  width: 100%;
 }
 
 .table-header {
   display: grid;
-  grid-template-columns: 0.5fr 2fr 1.5fr 1.5fr 1.5fr 1.5fr 2fr;
-  gap: 1rem;
+  grid-template-columns: 60px 1fr 140px 140px 140px 120px 160px;
+  gap: 0.75rem;
   padding: 1rem 1.5rem;
   background: #f8fafc;
   border-bottom: 1px solid #e2e8f0;
@@ -977,8 +981,8 @@ body {
 
 .table-row {
   display: grid;
-  grid-template-columns: 0.5fr 2fr 1.5fr 1.5fr 1.5fr 1.5fr 2fr;
-  gap: 1rem;
+  grid-template-columns: 60px 1fr 140px 140px 140px 120px 160px;
+  gap: 0.75rem;
   padding: 1.5rem;
   border-bottom: 1px solid #f1f5f9;
   align-items: center;
@@ -1426,68 +1430,23 @@ body {
 
 /* Tablet (768px - 1023px) */
 @media (max-width: 1023px) and (min-width: 768px) {
-  .sidebar {
-    width: 80px;
-  }
-
-  .sidebar.collapsed {
-    width: 80px;
-  }
-
-  .main-content {
-    margin-left: 80px;
-  }
-
-  .main-content.sidebar-collapsed {
-    margin-left: 80px;
-  }
-
-  .content {
-    padding: 1.5rem;
-  }
-
-  .dashboard-header h1 {
-    font-size: 1.75rem;
-  }
-
   .header {
     padding: 1rem;
   }
 
   .search-container {
-    max-width: 300px;
+    min-width: 250px;
   }
 
-  .top-widgets-row {
-    grid-template-columns: 1fr;
-    gap: 1rem;
-  }
-
-  .metrics-row {
-    grid-template-columns: 1fr;
-    gap: 1rem;
-  }
-
-  .bottom-row {
-    grid-template-columns: 1fr;
-    gap: 1rem;
-  }
-
-  .subscription-row {
-    grid-template-columns: 1fr;
-    gap: 1rem;
-  }
-
-  .verification-content {
-    flex-direction: column;
-    gap: 1rem;
+  .content {
+    padding: 1rem;
   }
 
   /* Table adjustments for tablet */
   .table-header,
   .table-row {
-    grid-template-columns: 0.4fr 1.5fr 1.2fr 1.2fr 1.2fr 1.2fr 1.5fr;
-    gap: 0.75rem;
+    grid-template-columns: 50px 1fr 120px 120px 120px 100px 140px;
+    gap: 0.5rem;
     padding: 1rem;
   }
 
@@ -1495,18 +1454,18 @@ body {
   .participant-name,
   .phone-number,
   .status-text {
-    font-size: 0.85rem;
+    font-size: 0.8rem;
   }
 
   .subscription-text {
-    font-size: 0.8rem;
-    padding: 0.25rem 0.5rem;
+    font-size: 0.75rem;
+    padding: 0.2rem 0.4rem;
   }
 
   .btn-verify,
   .btn-reject {
-    padding: 0.4rem 0.8rem;
-    font-size: 0.8rem;
+    padding: 0.3rem 0.6rem;
+    font-size: 0.75rem;
   }
 
   /* Activity list adjustments for tablet */
@@ -1552,9 +1511,23 @@ body {
     margin-left: 0;
   }
 
+  .header {
+    padding: 0.75rem 1rem;
+    margin-top: 4rem;
+    flex-direction: row;
+    gap: 1rem;
+    align-items: center;
+  }
+
+  .search-container {
+    flex: 1;
+    min-width: auto;
+    max-width: none;
+  }
+
   .content {
     padding: 1rem;
-    padding-top: 5rem; /* Account for mobile menu button */
+    padding-top: 5rem;
   }
 
   .dashboard-header h1 {
@@ -1565,13 +1538,13 @@ body {
     font-size: 1rem;
   }
 
-  .header {
-    padding: 0.75rem 1rem;
-    margin-top: 4rem; /* Account for mobile menu button */
+  .search-input {
+    font-size: 0.9rem;
+    padding: 0.65rem 0.9rem 0.65rem 2.2rem;
   }
 
-  .search-container {
-    max-width: 250px;
+  .search-icon {
+    left: 0.65rem;
   }
 
   /* Hide desktop table, show mobile cards */
@@ -1665,13 +1638,13 @@ body {
 
   .header {
     padding: 0.5rem 0.75rem;
-    flex-direction: column;
+    flex-direction: row;
     gap: 0.75rem;
-    align-items: stretch;
+    align-items: center;
   }
 
   .search-container {
-    max-width: 100%;
+    flex: 1;
   }
 
   .widget {
@@ -1706,6 +1679,16 @@ body {
   .activity-list.scrollable {
     max-height: 200px;
   }
+
+  .search-input {
+    font-size: 0.85rem;
+    padding: 0.6rem 0.8rem 0.6rem 2rem;
+  }
+
+  .search-icon {
+    left: 0.6rem;
+    transform: translateY(-50%) scale(0.9);
+  }
 }
 
 /* Landscape Mobile */
@@ -1729,6 +1712,18 @@ body {
 
   .activity-list.scrollable {
     max-height: 180px;
+  }
+}
+
+@media (max-width: 1023px) {
+  .participants-table {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .table-header,
+  .table-row {
+    min-width: 800px;
   }
 }
 
@@ -1769,4 +1764,81 @@ body {
     max-height: none !important;
     overflow: visible !important;
   }
+}
+
+/* Table Section Styles */
+.table-section {
+  margin-bottom: 3rem;
+}
+
+.section-title {
+  margin-bottom: 1.5rem;
+  padding-bottom: 1rem;
+  border-bottom: 2px solid #e2e8f0;
+}
+
+.section-title h2 {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #1e293b;
+  margin-bottom: 0.5rem;
+}
+
+.section-title p {
+  color: #64748b;
+  font-size: 1rem;
+}
+
+/* Desktop/Mobile visibility */
+.desktop-table {
+  display: block;
+}
+
+.mobile-cards {
+  display: none;
+}
+
+/* Update table grid to remove action column for completed table */
+.participants-table.no-actions .table-header,
+.participants-table.no-actions .table-row {
+  grid-template-columns: 60px 1fr 140px 140px 140px 160px;
+}
+
+/* Mobile responsive adjustments */
+@media (max-width: 767px) {
+  .desktop-table {
+    display: none;
+  }
+
+  .mobile-cards {
+    display: block;
+  }
+
+  .section-title h2 {
+    font-size: 1.25rem;
+  }
+
+  .section-title p {
+    font-size: 0.9rem;
+  }
+
+  .table-section {
+    margin-bottom: 2rem;
+  }
+}
+
+/* Remove phone icon spacing */
+.phone-number {
+  display: flex;
+  align-items: center;
+  font-weight: 500;
+  color: #334155;
+  font-size: 0.9rem;
+}
+
+.mobile-phone {
+  display: flex;
+  align-items: center;
+  color: #64748b;
+  font-size: 0.9rem;
 }
