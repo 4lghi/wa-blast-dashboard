@@ -58,25 +58,45 @@ export const createNasabah = async (req: Request, res: Response) => {
   }
 };
 
-// 🔹 PUT update nasabah
+// 🔹 PATCH update nasabah
 export const updateNasabah = async (req: Request, res: Response) => {
   const { id } = req.params;
-  const { nama, no_hp, status, status_langganan, nik, no_kpj } = req.body;
+  const {
+    nama,
+    no_hp,
+    status,
+    status_langganan,
+    nik,
+    no_kpj,
+    action,
+  } = req.body;
+
+  const updateData: any = {
+    nama,
+    no_hp,
+    status,
+    status_langganan,
+    nik,
+    no_kpj,
+  };
+
+  // Jika ada aksi verifikasi/tolak
+  if (action === "verify") {
+    updateData.status = "verified";
+    updateData.verifiedAt = new Date();
+  } else if (action === "reject") {
+    updateData.status = "rejected";
+    updateData.verifiedAt = null;
+  }
 
   try {
     const nasabah = await prisma.nasabah.update({
       where: { id },
-      data: {
-        nama,
-        no_hp,
-        status,
-        status_langganan,
-        nik,
-        no_kpj,
-      },
+      data: updateData,
     });
     res.json(nasabah);
   } catch (error) {
+    console.error(error);
     res.status(500).json({ error: "Gagal mengupdate nasabah." });
   }
 };
