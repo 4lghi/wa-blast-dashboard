@@ -1,4 +1,4 @@
-import { CheckCircle, Clock, TrendingUp, TrendingDown } from "lucide-react"
+import { CheckCircle, Clock } from "lucide-react"
 import VerificationPieChart from "./VerificationPieChart"
 import SubscriptionPieChart from "./SubscriptionPieChart"
 import RecentActivity from "./RecentActivity"
@@ -16,7 +16,9 @@ const Dashboard = ({ participants, activities }: DashboardProps) => {
   const verified = participants.filter((p) => p.status === "verified").length
   const pending = participants.filter((p) => p.status === "pending").length
   const rejected = participants.filter((p) => p.status === "rejected").length
-  const subscribed = participants.filter((p) => p.status_langganan === "active" || p.status_langganan === "subscribe").length
+  const subscribed = participants.filter(
+    (p) => p.status_langganan === "active" || p.status_langganan === "subscribe",
+  ).length
   const unsubscribed = participants.filter((p) => p.status_langganan === "unsubscribe").length
   const inactive = participants.filter((p) => p.status_langganan === "inactive").length
 
@@ -45,8 +47,8 @@ const Dashboard = ({ participants, activities }: DashboardProps) => {
         <p>Monitor status verifikasi peserta dan aktivitas</p>
       </div>
 
-      {/* Top Row - Progress Verifikasi */}
-      <div className="top-widgets-row">
+      {/* Top Row - Progress Verifikasi (Full Width) */}
+      <div className="top-widget-row">
         {/* Enhanced Verification Progress */}
         <div className="widget verification-widget enhanced">
           <div className="widget-header">
@@ -60,26 +62,26 @@ const Dashboard = ({ participants, activities }: DashboardProps) => {
                   <div className="progress-percentage">{completionRate}%</div>
                   <div className="progress-label">Selesai</div>
                 </div>
-                <svg className="progress-ring" width="120" height="120">
+                <svg className="progress-ring" width="160" height="160">
                   <circle
                     className="progress-ring-background"
                     stroke="#f1f5f9"
-                    strokeWidth="8"
+                    strokeWidth="12"
                     fill="transparent"
-                    r="52"
-                    cx="60"
-                    cy="60"
+                    r="70"
+                    cx="80"
+                    cy="80"
                   />
                   <circle
                     className="progress-ring-progress"
                     stroke="#10b981"
-                    strokeWidth="8"
+                    strokeWidth="12"
                     fill="transparent"
-                    r="52"
-                    cx="60"
-                    cy="60"
-                    strokeDasharray={`${(completionRate / 100) * 326.73} 326.73`}
-                    transform="rotate(-90 60 60)"
+                    r="70"
+                    cx="80"
+                    cy="80"
+                    strokeDasharray={`${(completionRate / 100) * 439.82} 439.82`}
+                    transform="rotate(-90 80 80)"
                   />
                 </svg>
               </div>
@@ -88,7 +90,7 @@ const Dashboard = ({ participants, activities }: DashboardProps) => {
               <div className="stat-row">
                 <div className="stat-item verified">
                   <div className="stat-icon">
-                    <CheckCircle size={20} />
+                    <CheckCircle size={24} />
                   </div>
                   <div className="stat-content">
                     <span className="stat-value">{verified}</span>
@@ -98,7 +100,7 @@ const Dashboard = ({ participants, activities }: DashboardProps) => {
                 </div>
                 <div className="stat-item pending">
                   <div className="stat-icon">
-                    <Clock size={20} />
+                    <Clock size={24} />
                   </div>
                   <div className="stat-content">
                     <span className="stat-value">{pending}</span>
@@ -124,104 +126,10 @@ const Dashboard = ({ participants, activities }: DashboardProps) => {
             </div>
           </div>
         </div>
-
-        {/* Activity Chart */}
-        <div className="widget activity-widget">
-          <div className="widget-header">
-            <h3>Tren Verifikasi</h3>
-            <span className="activity-percentage">{verificationRate}%</span>
-          </div>
-          <div className="activity-chart">
-            <div className="chart-bars">
-              {[
-                Math.max(20, (verified / total) * 100),
-                Math.max(20, (pending / total) * 100),
-                Math.max(20, (rejected / total) * 100),
-                Math.max(20, verificationRate),
-                Math.max(20, 100 - verificationRate),
-                Math.max(20, (pending / total) * 100),
-                Math.max(20, (subscribed / total) * 100),
-              ].map((height, index) => (
-                <div key={index} className="chart-bar" style={{ height: `${Math.min(height, 100)}%` }} />
-              ))}
-            </div>
-            <div className="chart-labels">
-              <span>VER</span>
-              <span>PEN</span>
-              <span>REJ</span>
-              <span>TOT</span>
-              <span>REM</span>
-              <span>REV</span>
-              <span>SUB</span>
-            </div>
-          </div>
-          <div className="chart-legend">
-            <div className="legend-item">
-              <div className="legend-dot verified"></div>
-              <span>Verified</span>
-            </div>
-            <div className="legend-item">
-              <div className="legend-dot pending"></div>
-              <span>Pending</span>
-            </div>
-            <div className="legend-item">
-              <div className="legend-dot rejected"></div>
-              <span>Rejected</span>
-            </div>
-          </div>
-        </div>
       </div>
 
-      {/* Middle Row - Metrics Cards */}
-      <div className="metrics-row">
-        <div className="metric-card">
-          <div className="metric-header">
-            <span className="metric-label">Total Peserta</span>
-            <TrendingUp className="trend-icon positive" size={16} />
-          </div>
-          <div className="metric-value">{total}</div>
-          <div className="metric-trend">
-            <div className="trend-line positive">
-              <svg viewBox="0 0 100 20" className="trend-svg">
-                <polyline points="0,15 20,12 40,8 60,10 80,5 100,3" fill="none" stroke="#10b981" strokeWidth="2" />
-              </svg>
-            </div>
-          </div>
-        </div>
-
-        <div className="metric-card">
-          <div className="metric-header">
-            <span className="metric-label">Total Verifikasi</span>
-            <TrendingUp className="trend-icon positive" size={16} />
-          </div>
-          <div className="metric-value">{verified}</div>
-          <div className="metric-trend">
-            <div className="trend-line positive">
-              <svg viewBox="0 0 100 20" className="trend-svg">
-                <polyline points="0,8 20,6 40,4 60,7 80,2 100,1" fill="none" stroke="#10b981" strokeWidth="2" />
-              </svg>
-            </div>
-          </div>
-        </div>
-
-        <div className="metric-card">
-          <div className="metric-header">
-            <span className="metric-label">Pending Review</span>
-            <TrendingDown className="trend-icon negative" size={16} />
-          </div>
-          <div className="metric-value">{pending}</div>
-          <div className="metric-trend">
-            <div className="trend-line negative">
-              <svg viewBox="0 0 100 20" className="trend-svg">
-                <polyline points="0,5 20,8 40,12 60,10 80,15 100,17" fill="none" stroke="#ef4444" strokeWidth="2" />
-              </svg>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      {/* Bottom Row - Status Overview and Charts */}
-      <div className="bottom-row">
+      {/* Main Row - Status Overview and Charts */}
+      <div className="main-row">
         {/* Status Overview */}
         <div className="section status-overview">
           <div className="section-header">
@@ -235,7 +143,10 @@ const Dashboard = ({ participants, activities }: DashboardProps) => {
                 <span className="status-amount">{verified} Peserta</span>
               </div>
               <div className="status-bar">
-                <div className="status-progress verified" style={{ width: `${(verified / total) * 100}%` }} />
+                <div
+                  className="status-progress verified"
+                  style={{ width: `${total > 0 ? (verified / total) * 100 : 0}%` }}
+                />
               </div>
             </div>
 
@@ -245,7 +156,10 @@ const Dashboard = ({ participants, activities }: DashboardProps) => {
                 <span className="status-amount">{pending} Peserta</span>
               </div>
               <div className="status-bar">
-                <div className="status-progress pending" style={{ width: `${(pending / total) * 100}%` }} />
+                <div
+                  className="status-progress pending"
+                  style={{ width: `${total > 0 ? (pending / total) * 100 : 0}%` }}
+                />
               </div>
             </div>
 
@@ -255,7 +169,10 @@ const Dashboard = ({ participants, activities }: DashboardProps) => {
                 <span className="status-amount">{rejected} Peserta</span>
               </div>
               <div className="status-bar">
-                <div className="status-progress rejected" style={{ width: `${(rejected / total) * 100}%` }} />
+                <div
+                  className="status-progress rejected"
+                  style={{ width: `${total > 0 ? (rejected / total) * 100 : 0}%` }}
+                />
               </div>
             </div>
 
@@ -265,7 +182,10 @@ const Dashboard = ({ participants, activities }: DashboardProps) => {
                 <span className="status-amount">{subscribed} Peserta</span>
               </div>
               <div className="status-bar">
-                <div className="status-progress subscribed" style={{ width: `${(subscribed / total) * 100}%` }} />
+                <div
+                  className="status-progress subscribed"
+                  style={{ width: `${total > 0 ? (subscribed / total) * 100 : 0}%` }}
+                />
               </div>
             </div>
           </div>
@@ -279,14 +199,9 @@ const Dashboard = ({ participants, activities }: DashboardProps) => {
           </div>
           <VerificationPieChart data={verificationData} total={total} compact={false} />
         </div>
-
-        {/* Recent Activity */}
-        <div className="section activity-section">
-          <RecentActivity activities={activities} />
-        </div>
       </div>
 
-      {/* New Row - Subscription Status */}
+      {/* Subscription Row */}
       <div className="subscription-row">
         {/* Status Berlangganan */}
         <div className="section subscription-overview">
@@ -301,7 +216,10 @@ const Dashboard = ({ participants, activities }: DashboardProps) => {
                 <span className="status-amount">{subscribed} Peserta</span>
               </div>
               <div className="status-bar">
-                <div className="status-progress subscribed" style={{ width: `${(subscribed / total) * 100}%` }} />
+                <div
+                  className="status-progress subscribed"
+                  style={{ width: `${total > 0 ? (subscribed / total) * 100 : 0}%` }}
+                />
               </div>
             </div>
 
@@ -311,7 +229,10 @@ const Dashboard = ({ participants, activities }: DashboardProps) => {
                 <span className="status-amount">{unsubscribed} Peserta</span>
               </div>
               <div className="status-bar">
-                <div className="status-progress unsubscribed" style={{ width: `${(unsubscribed / total) * 100}%` }} />
+                <div
+                  className="status-progress unsubscribed"
+                  style={{ width: `${total > 0 ? (unsubscribed / total) * 100 : 0}%` }}
+                />
               </div>
             </div>
 
@@ -321,7 +242,10 @@ const Dashboard = ({ participants, activities }: DashboardProps) => {
                 <span className="status-amount">{inactive} Peserta</span>
               </div>
               <div className="status-bar">
-                <div className="status-progress inactive" style={{ width: `${(inactive / total) * 100}%` }} />
+                <div
+                  className="status-progress inactive"
+                  style={{ width: `${total > 0 ? (inactive / total) * 100 : 0}%` }}
+                />
               </div>
             </div>
           </div>
@@ -334,6 +258,11 @@ const Dashboard = ({ participants, activities }: DashboardProps) => {
             <span className="chart-total">{total}</span>
           </div>
           <SubscriptionPieChart data={subscriptionData} total={total} compact={false} />
+        </div>
+
+        {/* Recent Activity - Moved here */}
+        <div className="section activity-section">
+          <RecentActivity activities={activities} />
         </div>
       </div>
     </div>

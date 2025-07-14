@@ -64,20 +64,22 @@ const SubscriptionPieChart = ({ data, total, compact = false }: SubscriptionPieC
     )
   }
 
-  const chartHeight = compact ? 180 : 280
+  const chartHeight = compact ? 200 : 300 // Adjusted height
+  const innerRadius = compact ? 40 : 60 // Adjusted radius
+  const outerRadius = compact ? 75 : 90 // Adjusted radius
 
   return (
     <div className={`pie-chart-container ${compact ? "compact" : ""}`}>
       <div className="pie-chart-wrapper">
         <ResponsiveContainer width="100%" height={chartHeight}>
-          <PieChart>
+          <PieChart margin={{ top: 20, right: 20, bottom: 20, left: 20 }}>
             <Pie
               data={filteredData}
               cx="50%"
               cy="50%"
-              innerRadius={compact ? 40 : 60}
-              outerRadius={compact ? 70 : 100}
-              paddingAngle={2}
+              innerRadius={innerRadius}
+              outerRadius={outerRadius}
+              paddingAngle={1}
               dataKey="value"
             >
               {filteredData.map((entry, index) => (

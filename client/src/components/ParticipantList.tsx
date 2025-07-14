@@ -266,12 +266,12 @@ const ParticipantList = ({ participants, onVerify, searchQuery }: ParticipantLis
 
               {/* Desktop Table */}
               <div className="desktop-table">
-                {renderTable(completedParticipants, false, pendingParticipants.length)}
+                {renderTable(completedParticipants, false, 0)} {/* Changed startIndex to 0 */}
               </div>
 
               {/* Mobile Cards */}
               <div className="mobile-cards">
-                {renderMobileCards(completedParticipants, false, pendingParticipants.length)}
+                {renderMobileCards(completedParticipants, false, 0)} {/* Changed startIndex to 0 */}
               </div>
             </div>
           )}
