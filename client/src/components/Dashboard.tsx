@@ -2,7 +2,7 @@ import { CheckCircle, Clock, TrendingUp, TrendingDown } from "lucide-react"
 import VerificationPieChart from "./VerificationPieChart"
 import SubscriptionPieChart from "./SubscriptionPieChart"
 import RecentActivity from "./RecentActivity"
-import type { Participant } from "../data/participants"
+import type { Participant } from "../types/participant"
 import type { Activity } from "../App"
 
 interface DashboardProps {
@@ -16,9 +16,9 @@ const Dashboard = ({ participants, activities }: DashboardProps) => {
   const verified = participants.filter((p) => p.status === "verified").length
   const pending = participants.filter((p) => p.status === "pending").length
   const rejected = participants.filter((p) => p.status === "rejected").length
-  const subscribed = participants.filter((p) => p.subscription === "active" || p.subscription === "subscribe").length
-  const unsubscribed = participants.filter((p) => p.subscription === "unsubscribe").length
-  const inactive = participants.filter((p) => p.subscription === "inactive").length
+  const subscribed = participants.filter((p) => p.status_langganan === "active" || p.status_langganan === "subscribe").length
+  const unsubscribed = participants.filter((p) => p.status_langganan === "unsubscribe").length
+  const inactive = participants.filter((p) => p.status_langganan === "inactive").length
 
   // Calculate percentage changes
   const verificationRate = total > 0 ? Math.round((verified / total) * 100) : 0

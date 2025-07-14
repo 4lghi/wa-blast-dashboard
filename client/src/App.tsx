@@ -88,8 +88,7 @@ function App() {
   const renderContent = () => {
     switch (activePage) {
       case "dashboard":
-        return 
-        // <Dashboard participants={participants} activities={activities} />
+        return <Dashboard participants={participants} activities={activities} />
       case "participants":
         return (
           <ParticipantList
