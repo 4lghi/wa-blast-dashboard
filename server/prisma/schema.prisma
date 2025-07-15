@@ -18,16 +18,17 @@ model users {
 }
 
 model nasabah {
-  id               String   @id @default(cuid())
+  id               String    @id @default(cuid())
   nama             String
   no_hp            String
   status           String
   status_langganan String
-  nik              String   @unique
-  no_kpj           String   @unique
-  updatedAt        DateTime @updatedAt
-  verifiedAt       DateTime? 
+  nik              String    @unique
+  no_kpj           String    @unique
+  updatedAt        DateTime  @updatedAt
   userId           String
-  isActive         Boolean  @default(true)
-  user             users    @relation(fields: [userId], references: [id])
+  isActive         Boolean   @default(true)
+  verifiedAt       DateTime?
+  isSended         Boolean   @default(true)
+  user             users     @relation(fields: [userId], references: [id])
 }

@@ -10,7 +10,7 @@ export interface Participant {
   updatedAt: string // karena DateTime dari Prisma dikirim sebagai string via API
   userId: string
   isActive: boolean
-  verifiedAt?: string | null // nullable karena belum tentu sudah diverifikasi
+  verifiedAt?: string | null // nullable karena belum tentu sudah diverifikasi/ditolak
   user?: {
     id: string
     // Tambahkan field dari tabel `users` jika perlu

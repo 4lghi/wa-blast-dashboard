@@ -86,7 +86,7 @@ export const updateNasabah = async (req: Request, res: Response) => {
     updateData.verifiedAt = new Date();
   } else if (action === "reject") {
     updateData.status = "rejected";
-    updateData.verifiedAt = null;
+    updateData.verifiedAt = new Date();
   }
 
   try {
