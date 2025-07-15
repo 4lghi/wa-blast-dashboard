@@ -5,7 +5,7 @@
 }
 
 body {
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", sans-serif;
+  font-family: -apple-system, BlinkMacMacSystemFont, "Segoe UI", "Roboto", sans-serif;
   background-color: #f8fafc;
   color: #334155;
 }
@@ -13,6 +13,7 @@ body {
 .app {
   display: flex;
   min-height: 100vh;
+  width: 100%;
 }
 
 /* Mobile Menu Button */
@@ -166,6 +167,7 @@ body {
   display: flex;
   flex-direction: column;
   min-height: 100vh;
+  width: 100%;
 }
 
 .main-content.sidebar-collapsed {
@@ -293,7 +295,7 @@ body {
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
   border: 1px solid #f1f5f9;
   width: 100%;
-  min-height: 350px;
+  /* min-height: 350px; */
 }
 
 .widget-header {
@@ -320,35 +322,40 @@ body {
 .verification-widget.enhanced {
   padding: 2.5rem;
   width: 100%;
-  min-height: 400px;
+  /* min-height: 400px; */
 }
 
 .verification-content {
   display: flex;
-  gap: 4rem;
+  gap: 2rem;
   align-items: center;
   width: 100%;
-  justify-content: center;
+  justify-content: space-between; /* Changed from center to space-between */
+  flex-wrap: wrap;
 }
 
 .circular-progress-enhanced {
-  position: relative;
+  flex-shrink: 0;
+  flex-basis: 180px; /* Fixed width for the circle container */
   display: flex;
-  align-items: center;
   justify-content: center;
+  align-items: center;
 }
 
 .progress-circle-large {
   position: relative;
-  width: 160px;
-  height: 160px;
-  display: flex;
+  width: 140px; /* Consistent size */
+  height: 140px; /* Consistent size */
+  display: flex; /* Changed back to flex */
   align-items: center;
   justify-content: center;
 }
 
 .progress-inner-large {
-  position: absolute;
+  position: absolute; /* Re-added */
+  top: 50%; /* Re-added */
+  left: 50%; /* Re-added */
+  transform: translate(-50%, -50%); /* Re-added */
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -357,10 +364,11 @@ body {
 }
 
 .progress-percentage {
-  font-size: 2.5rem;
+  font-size: 2rem; /* Consistent font size */
   font-weight: 700;
   color: #10b981;
   line-height: 1;
+  text-align: center; /* Added for explicit text centering */
 }
 
 .progress-label {
@@ -368,6 +376,7 @@ body {
   color: #64748b;
   font-weight: 500;
   margin-top: 0.5rem;
+  text-align: center; /* Added for explicit text centering */
 }
 
 .progress-ring {
@@ -389,23 +398,30 @@ body {
   flex: 1;
   display: flex;
   flex-direction: column;
-  gap: 2rem;
-  max-width: 600px;
+  gap: 1.5rem;
+  max-width: 100%;
+  flex-grow: 1;
 }
 
 .stat-row {
   display: flex;
-  gap: 2rem;
+  gap: 1rem;
+  flex-wrap: wrap;
+  justify-content: space-between; /* Changed from center to space-between */
+  align-items: center;
 }
 
 .stat-item {
   display: flex;
   align-items: center;
-  gap: 1.25rem;
-  padding: 2rem;
+  gap: 1rem;
+  padding: 1.5rem;
   background: #f8fafc;
   border-radius: 1rem;
   flex: 1;
+  min-width: 150px;
+  justify-content: center;
+  text-align: center;
 }
 
 .stat-item.verified {
@@ -424,6 +440,8 @@ body {
   align-items: center;
   justify-content: center;
   color: white;
+  flex-shrink: 0;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
 }
 
 .stat-item.verified .stat-icon {
@@ -438,6 +456,8 @@ body {
   display: flex;
   flex-direction: column;
   gap: 0.25rem;
+  min-width: 0;
+  align-items: center;
 }
 
 .stat-value {
@@ -445,12 +465,14 @@ body {
   font-weight: 700;
   color: #1e293b;
   line-height: 1;
+  white-space: nowrap;
 }
 
 .stat-label {
   font-size: 1rem;
   color: #64748b;
   font-weight: 500;
+  margin-top: 0.5rem;
 }
 
 .stat-percentage {
@@ -467,7 +489,7 @@ body {
   display: flex;
   flex-direction: column;
   gap: 1rem;
-  padding: 2rem;
+  padding: 1.5rem;
   background: #f8fafc;
   border-radius: 1rem;
   border: 1px solid #e2e8f0;
@@ -498,7 +520,7 @@ body {
 /* Main Row - replaces bottom row */
 .main-row {
   display: grid;
-  grid-template-columns: 1fr 2fr; /* Changed to make verification chart wider */
+  grid-template-columns: 1fr 2fr 1fr; /* Status Overview, Verification Chart, Recent Activity */
   gap: 2rem;
   width: 100%;
 }
@@ -506,7 +528,7 @@ body {
 /* Subscription Row */
 .subscription-row {
   display: grid;
-  grid-template-columns: 1fr 1fr 1fr; /* Changed to accommodate Recent Activity */
+  grid-template-columns: 1fr 1fr; /* Status Berlangganan, Subscription Pie Chart */
   gap: 2rem;
   width: 100%;
 }
@@ -517,7 +539,7 @@ body {
   padding: 1.5rem;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
   border: 1px solid #f1f5f9;
-  min-height: 400px;
+  /* min-height: 400px; */
   display: flex;
   flex-direction: column;
 }
@@ -614,13 +636,15 @@ body {
 .chart-section {
   display: flex;
   flex-direction: column;
+  flex: 1;
 }
 
 /* Activity Section */
 .activity-section {
   display: flex;
   flex-direction: column;
-  min-height: 400px;
+  /* min-height: 400px; */
+  flex: 1;
 }
 
 /* Subscription Overview */
@@ -676,6 +700,7 @@ body {
   display: flex;
   flex-direction: column;
   gap: 0.75rem;
+  flex: 1;
 }
 
 .activity-list.scrollable {
@@ -684,6 +709,7 @@ body {
   overflow-x: hidden;
   padding-right: 0.5rem;
   margin-right: -0.5rem;
+  min-height: 150px;
 }
 
 /* Custom Scrollbar */
@@ -843,7 +869,10 @@ body {
 
 .table-header {
   display: grid;
-  grid-template-columns: 60px 1fr 140px 140px 140px 120px 160px;
+  grid-template-columns: minmax(40px, 0.5fr) minmax(150px, 2fr) minmax(120px, 1.2fr) minmax(100px, 1fr) minmax(
+      100px,
+      1fr
+    ) minmax(100px, 1fr) minmax(120px, 1.5fr);
   gap: 0.75rem;
   padding: 1rem 1.5rem;
   background: #f8fafc;
@@ -858,7 +887,10 @@ body {
 
 .table-row {
   display: grid;
-  grid-template-columns: 60px 1fr 140px 140px 140px 120px 160px;
+  grid-template-columns: minmax(40px, 0.5fr) minmax(150px, 2fr) minmax(120px, 1.2fr) minmax(100px, 1fr) minmax(
+      100px,
+      1fr
+    ) minmax(100px, 1fr) minmax(120px, 1.5fr);
   gap: 0.75rem;
   padding: 1.5rem;
   border-bottom: 1px solid #f1f5f9;
@@ -1152,7 +1184,6 @@ body {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 1rem;
-  margin-bottom: 1rem;
 }
 
 .mobile-field {
@@ -1194,22 +1225,28 @@ body {
   padding: 1.5rem;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
   width: 100%;
-  height: fit-content;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 }
 
 .pie-chart-wrapper {
   width: 100%;
-  height: 280px; /* Fixed height for square aspect ratio */
-  margin: 0 auto; /* Center the chart horizontally */
+  aspect-ratio: 1 / 1;
+  margin: 0 auto;
 }
 
 .empty-chart {
   display: flex;
   align-items: center;
   justify-content: center;
-  height: 280px; /* Match pie-chart-wrapper height */
-  color: #64748b;
-  font-style: italic;
+  height: 100%;
+  width: 100%;
+  min-height: 200px;
+  flex-direction: column;
+  text-align: center;
 }
 
 /* Custom Tooltip */
@@ -1279,7 +1316,7 @@ body {
 }
 
 /* Desktop (1024px - 1439px) */
-@media (max-width: 1439px) and (min-width: 1024px) {
+@media (min-width: 1024px) {
   .sidebar {
     width: 280px;
   }
@@ -1297,11 +1334,11 @@ body {
   }
 
   .main-row {
-    grid-template-columns: 1fr 2fr; /* Apply wider chart on desktop */
+    grid-template-columns: 1fr 2fr 1fr;
   }
 
   .subscription-row {
-    grid-template-columns: 1fr 1fr 1fr; /* Apply 3-column layout on desktop */
+    grid-template-columns: 1fr 1fr;
   }
 }
 
@@ -1339,7 +1376,7 @@ body {
   /* Table adjustments for tablet */
   .table-header,
   .table-row {
-    grid-template-columns: 50px 1fr 120px 120px 120px 100px 140px;
+    grid-template-columns: minmax(40px, 0.5fr) 1.2fr 120px 120px 120px minmax(100px, 1fr) minmax(120px, 1.5fr);
     gap: 0.5rem;
     padding: 1rem;
   }
@@ -1367,12 +1404,16 @@ body {
     max-height: 280px;
   }
 
+  /* Tablet specific grid for main-row */
   .main-row {
-    grid-template-columns: 1fr 2fr; /* Apply wider chart on tablet */
+    grid-template-columns: 1fr 1fr;
+  }
+  .main-row .activity-section {
+    grid-column: 1 / -1;
   }
 
   .subscription-row {
-    grid-template-columns: 1fr 1fr 1fr; /* Apply 3-column layout on tablet */
+    grid-template-columns: 1fr 1fr;
   }
 }
 
@@ -1400,7 +1441,7 @@ body {
   }
 
   .sidebar.collapsed {
-    width: 280px; /* Override collapsed width on mobile */
+    width: 280px;
   }
 
   /* Main content adjustments */
@@ -1460,23 +1501,21 @@ body {
   }
 
   .main-row {
-    grid-template-columns: 1fr; /* Stack columns on mobile */
+    grid-template-columns: 1fr;
     gap: 1rem;
   }
 
   .subscription-row {
-    grid-template-columns: 1fr; /* Stack columns on mobile */
+    grid-template-columns: 1fr;
     gap: 1rem;
   }
 
   .widget {
     padding: 1.5rem;
-    min-height: 300px;
   }
 
   .section {
     padding: 1rem;
-    min-height: 300px;
   }
 
   .verification-content {
@@ -1539,12 +1578,10 @@ body {
 
   .widget {
     padding: 1rem;
-    min-height: 280px;
   }
 
   .section {
     padding: 0.75rem;
-    min-height: 280px;
   }
 
   .progress-percentage {
@@ -1567,7 +1604,6 @@ body {
 
   .search-icon {
     left: 0.6rem;
-    transform: translateY(-50%) scale(0.9);
   }
 }
 
@@ -1681,7 +1717,10 @@ body {
 /* Update table grid to remove action column for completed table */
 .participants-table.no-actions .table-header,
 .participants-table.no-actions .table-row {
-  grid-template-columns: 60px 1fr 140px 140px 140px 160px;
+  grid-template-columns: minmax(40px, 0.5fr) minmax(150px, 2fr) minmax(120px, 1.2fr) minmax(100px, 1fr) minmax(
+      100px,
+      1fr
+    ) minmax(120px, 1.5fr);
 }
 
 /* Mobile responsive adjustments */
@@ -1719,6 +1758,7 @@ body {
 .mobile-phone {
   display: flex;
   align-items: center;
+  gap: 0.5rem;
   color: #64748b;
   font-size: 0.9rem;
 }

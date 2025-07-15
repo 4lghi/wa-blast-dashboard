@@ -128,13 +128,12 @@ const Dashboard = ({ participants, activities }: DashboardProps) => {
         </div>
       </div>
 
-      {/* Main Row - Status Overview and Charts */}
+      {/* Main Row - Status Overview, Verification Chart, and Recent Activity */}
       <div className="main-row">
         {/* Status Overview */}
         <div className="section status-overview">
           <div className="section-header">
             <h3>Status Overview</h3>
-            <span className="status-total">{total} Total</span>
           </div>
           <div className="status-list">
             <div className="status-item">
@@ -199,15 +198,19 @@ const Dashboard = ({ participants, activities }: DashboardProps) => {
           </div>
           <VerificationPieChart data={verificationData} total={total} compact={false} />
         </div>
+
+        {/* Recent Activity - Moved here */}
+        <div className="section activity-section">
+          <RecentActivity activities={activities} />
+        </div>
       </div>
 
-      {/* Subscription Row */}
+      {/* Subscription Row - Now only two columns */}
       <div className="subscription-row">
         {/* Status Berlangganan */}
         <div className="section subscription-overview">
           <div className="section-header">
             <h3>Status Berlangganan</h3>
-            <span className="status-total">{total} Total</span>
           </div>
           <div className="status-list">
             <div className="status-item">
@@ -258,11 +261,6 @@ const Dashboard = ({ participants, activities }: DashboardProps) => {
             <span className="chart-total">{total}</span>
           </div>
           <SubscriptionPieChart data={subscriptionData} total={total} compact={false} />
-        </div>
-
-        {/* Recent Activity - Moved here */}
-        <div className="section activity-section">
-          <RecentActivity activities={activities} />
         </div>
       </div>
     </div>

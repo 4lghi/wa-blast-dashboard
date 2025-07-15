@@ -6,6 +6,7 @@ import Header from "./components/Header"
 import Dashboard from "./components/Dashboard"
 import ParticipantList from "./components/ParticipantList"
 import { getParticipants, updateParticipantStatus } from "./services/participants"
+import { dummyParticipants } from "./data/participants" // Import dummy data
 import type { Participant } from "./types/participant"
 import "./App.css"
 
@@ -22,7 +23,7 @@ export interface Activity {
 function App() {
   const [activePage, setActivePage] = useState<ActivePage>("dashboard")
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false)
-  const [participants, setParticipants] = useState<Participant[]>([])
+  const [participants, setParticipants] = useState<Participant[]>(dummyParticipants) // Initialize with dummy data
   const [searchQuery, setSearchQuery] = useState("")
   const [activities, setActivities] = useState<Activity[]>([])
 
@@ -31,7 +32,7 @@ function App() {
     const fetchData = async () => {
       try {
         const data = await getParticipants()
-         console.log("PARTICIPANTS FROM BACKEND:", data) // Cek apakah ini array kosong?
+        console.log("PARTICIPANTS FROM BACKEND:", data) // Cek apakah ini array kosong?
         setParticipants(data)
       } catch (err) {
         console.error("Gagal mengambil partisipan", err)
@@ -46,9 +47,7 @@ function App() {
       id: `${Date.now()}-${Math.random()}`,
       type,
       message:
-        type === "verified"
-          ? `${participantName} telah diverifikasi`
-          : `${participantName} ditolak verifikasinya`,
+        type === "verified" ? `${participantName} telah diverifikasi` : `${participantName} ditolak verifikasinya`,
       timestamp: new Date().toISOString(),
       participantName,
     }
@@ -90,16 +89,10 @@ function App() {
       case "dashboard":
         return <Dashboard participants={participants} activities={activities} />
       case "participants":
-        return (
-          <ParticipantList
-            participants={filteredParticipants}
-            onVerify={handleVerify}
-            searchQuery={searchQuery}
-          />
-        )
+        return <ParticipantList participants={filteredParticipants} onVerify={handleVerify} searchQuery={searchQuery} />
       default:
-        return 
-        // <Dashboard participants={participants} activities={activities} />
+        return
+      // <Dashboard participants={participants} activities={activities} />
     }
   }
 

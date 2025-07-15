@@ -1,31 +1,27 @@
-"use client";
+"use client"
 
-import { CheckCircle, XCircle, Clock } from "lucide-react";
-import type { Participant } from "../types/participant";
+import { CheckCircle, XCircle, Clock } from "lucide-react"
+import type { Participant } from "../types/participant"
 
 interface ParticipantListProps {
-  participants: Participant[];
-  onVerify: (id: string, action: "verify" | "reject") => void;
-  searchQuery: string;
+  participants: Participant[]
+  onVerify: (id: string, action: "verify" | "reject") => void
+  searchQuery: string
 }
 
-const ParticipantList = ({
-  participants,
-  onVerify,
-  searchQuery,
-}: ParticipantListProps) => {
+const ParticipantList = ({ participants, onVerify, searchQuery }: ParticipantListProps) => {
   const getStatusIcon = (status: string) => {
     switch (status) {
       case "verified":
-        return <CheckCircle className="status-icon verified" size={16} />;
+        return <CheckCircle className="status-icon verified" size={16} />
       case "rejected":
-        return <XCircle className="status-icon rejected" size={16} />;
+        return <XCircle className="status-icon rejected" size={16} />
       case "pending":
-        return <Clock className="status-icon pending" size={16} />;
+        return <Clock className="status-icon pending" size={16} />
       default:
-        return null;
+        return null
     }
-  };
+  }
 
   const formatDateTime = (dateString: string) => {
     return new Date(dateString).toLocaleString("id-ID", {
@@ -34,53 +30,45 @@ const ParticipantList = ({
       year: "numeric",
       hour: "2-digit",
       minute: "2-digit",
-    });
-  };
+    })
+  }
 
   const getStatusText = (status: string) => {
     switch (status) {
       case "verified":
-        return "Terverifikasi";
+        return "Terverifikasi"
       case "rejected":
-        return "Ditolak";
+        return "Ditolak"
       case "pending":
-        return "Pending";
+        return "Pending"
       default:
-        return "Unknown";
+        return "Unknown"
     }
-  };
+  }
 
   const getSubscriptionText = (status: string) => {
     switch (status) {
       case "subscribe":
-        return "Berlangganan";
+        return "Berlangganan"
       case "unsubscribe":
-        return "Tidak Berlangganan";
+        return "Tidak Berlangganan"
       case "active":
-        return "Aktif";
+        return "Aktif"
       case "inactive":
-        return "Tidak Aktif";
+        return "Tidak Aktif"
       case "invalid":
-        return "Invalid";
+        return "Invalid"
       default:
-        return status;
+        return status
     }
-  };
+  }
 
   // Separate participants into pending and completed
-  const pendingParticipants = participants.filter(
-    (p) => p.status === "pending"
-  );
-  const completedParticipants = participants.filter(
-    (p) => p.status !== "pending"
-  );
+  const pendingParticipants = participants.filter((p) => p.status === "pending")
+  const completedParticipants = participants.filter((p) => p.status !== "pending")
 
-  const renderTable = (
-    participantList: Participant[],
-    showActions: boolean,
-    startIndex = 0
-  ) => (
-    <div className="participants-table">
+  const renderTable = (participantList: Participant[], showActions: boolean, startIndex = 0) => (
+    <div className={`participants-table ${!showActions ? "no-actions" : ""}`}>
       <div className="table-header">
         <div className="header-cell">No</div>
         <div className="header-cell">Peserta</div>
@@ -115,9 +103,7 @@ const ParticipantList = ({
           {/* Status Langganan Column */}
           <div className="cell subscription-cell">
             <div className="subscription-badge">
-              <span
-                className={`subscription-text ${participant.status_langganan}`}
-              >
+              <span className={`subscription-text ${participant.status_langganan}`}>
                 {getSubscriptionText(participant.status_langganan)}
               </span>
             </div>
@@ -127,35 +113,23 @@ const ParticipantList = ({
           <div className="cell status-cell">
             <div className="status-container">
               {getStatusIcon(participant.status)}
-              <span className={`status-text ${participant.status}`}>
-                {getStatusText(participant.status)}
-              </span>
+              <span className={`status-text ${participant.status}`}>{getStatusText(participant.status)}</span>
             </div>
           </div>
 
           {/* Aksi Column - Only show for pending */}
           {showActions && (
             <div className="cell action-cell">
-              {/* Tampilkan tombol hanya jika belum diverifikasi / ditolak */}
-              {!participant.verifiedAt && (
+              {participant.status === "pending" ? (
                 <div className="action-buttons">
-                  <button
-                    className="btn-verify"
-                    onClick={() => onVerify(participant.id, "verify")}
-                  >
+                  <button className="btn-verify" onClick={() => onVerify(participant.id, "verify")}>
                     Verifikasi
                   </button>
-                  <button
-                    className="btn-reject"
-                    onClick={() => onVerify(participant.id, "reject")}
-                  >
+                  <button className="btn-reject" onClick={() => onVerify(participant.id, "reject")}>
                     Tolak
                   </button>
                 </div>
-              )}
-
-              {/* Jika sudah diverifikasi / ditolak, tampilkan status */}
-              {participant.verifiedAt && (
+              ) : (
                 <div className="status-completed">
                   <span className="completed-text">Selesai</span>
                 </div>
@@ -168,16 +142,12 @@ const ParticipantList = ({
             {participant.status === "verified" && participant.verifiedAt ? (
               <div className="verification-date">
                 <div className="date-label">Diverifikasi:</div>
-                <div className="date-value">
-                  {formatDateTime(participant.verifiedAt)}
-                </div>
+                <div className="date-value">{formatDateTime(participant.verifiedAt)}</div>
               </div>
             ) : participant.status === "rejected" && participant.verifiedAt ? (
               <div className="rejection-date">
                 <div className="date-label">Ditolak:</div>
-                <div className="date-value rejected">
-                  {formatDateTime(participant.verifiedAt)}
-                </div>
+                <div className="date-value rejected">{formatDateTime(participant.verifiedAt)}</div>
               </div>
             ) : (
               <div className="pending-date">
@@ -188,13 +158,9 @@ const ParticipantList = ({
         </div>
       ))}
     </div>
-  );
+  )
 
-  const renderMobileCards = (
-    participantList: Participant[],
-    showActions: boolean,
-    startIndex = 0
-  ) => (
+  const renderMobileCards = (participantList: Participant[], showActions: boolean, startIndex = 0) => (
     <>
       {participantList.map((participant, index) => (
         <div key={`mobile-${participant.id}`} className="mobile-card">
@@ -205,18 +171,14 @@ const ParticipantList = ({
                 <span>{participant.no_hp}</span>
               </div>
             </div>
-            <div className="mobile-participant-number">
-              #{startIndex + index + 1}
-            </div>
+            <div className="mobile-participant-number">#{startIndex + index + 1}</div>
           </div>
 
           <div className="mobile-card-content">
             <div className="mobile-field">
               <div className="mobile-field-label">Status Langganan</div>
               <div className="mobile-field-value">
-                <span
-                  className={`subscription-text ${participant.status_langganan}`}
-                >
+                <span className={`subscription-text ${participant.status_langganan}`}>
                   {getSubscriptionText(participant.status_langganan)}
                 </span>
               </div>
@@ -227,48 +189,31 @@ const ParticipantList = ({
               <div className="mobile-field-value">
                 <div className="status-container">
                   {getStatusIcon(participant.status)}
-                  <span className={`status-text ${participant.status}`}>
-                    {getStatusText(participant.status)}
-                  </span>
+                  <span className={`status-text ${participant.status}`}>{getStatusText(participant.status)}</span>
                 </div>
               </div>
             </div>
 
-            {(participant.status === "verified" ||
-              participant.status === "rejected") &&
-              participant.verifiedAt && (
-                
-                <div className="mobile-field" style={{ gridColumn: "1 / -1" }}>
-                  <div className="mobile-field-label">
-                    {participant.status === "verified"
-                      ? "Tanggal Verifikasi"
-                      : "Tanggal Penolakan"}
-                  </div>
-                  <div className="mobile-field-value">
-                    <span
-                      className={
-                        participant.status === "rejected" ? "rejected" : ""
-                      }
-                    >
-                      {formatDateTime(participant.verifiedAt)}
-                    </span>
-                  </div>
+            {(participant.status === "verified" || participant.status === "rejected") && participant.verifiedAt && (
+              <div className="mobile-field" style={{ gridColumn: "1 / -1" }}>
+                <div className="mobile-field-label">
+                  {participant.status === "verified" ? "Tanggal Verifikasi" : "Tanggal Penolakan"}
                 </div>
-              )}
+                <div className="mobile-field-value">
+                  <span className={participant.status === "rejected" ? "rejected" : ""}>
+                    {formatDateTime(participant.verifiedAt)}
+                  </span>
+                </div>
+              </div>
+            )}
           </div>
 
           {showActions && participant.status === "pending" && (
             <div className="mobile-card-actions">
-              <button
-                className="btn-verify"
-                onClick={() => onVerify(participant.id, "verify")}
-              >
+              <button className="btn-verify" onClick={() => onVerify(participant.id, "verify")}>
                 Verifikasi
               </button>
-              <button
-                className="btn-reject"
-                onClick={() => onVerify(participant.id, "reject")}
-              >
+              <button className="btn-reject" onClick={() => onVerify(participant.id, "reject")}>
                 Tolak
               </button>
             </div>
@@ -276,7 +221,7 @@ const ParticipantList = ({
         </div>
       ))}
     </>
-  );
+  )
 
   return (
     <div className="participant-list">
@@ -291,11 +236,7 @@ const ParticipantList = ({
 
       {participants.length === 0 ? (
         <div className="empty-state">
-          <p>
-            {searchQuery
-              ? `Tidak ada peserta dengan nama "${searchQuery}"`
-              : "Belum ada data peserta"}
-          </p>
+          <p>{searchQuery ? `Tidak ada peserta dengan nama "${searchQuery}"` : "Belum ada data peserta"}</p>
         </div>
       ) : (
         <>
@@ -308,14 +249,10 @@ const ParticipantList = ({
               </div>
 
               {/* Desktop Table */}
-              <div className="desktop-table">
-                {renderTable(pendingParticipants, true, 0)}
-              </div>
+              <div className="desktop-table">{renderTable(pendingParticipants, true, 0)}</div>
 
               {/* Mobile Cards */}
-              <div className="mobile-cards">
-                {renderMobileCards(pendingParticipants, true, 0)}
-              </div>
+              <div className="mobile-cards">{renderMobileCards(pendingParticipants, true, 0)}</div>
             </div>
           )}
 
@@ -329,21 +266,19 @@ const ParticipantList = ({
 
               {/* Desktop Table */}
               <div className="desktop-table">
-                {renderTable(completedParticipants, false, 0)}{" "}
-                {/* Changed startIndex to 0 */}
+                {renderTable(completedParticipants, false, 0)} {/* Changed startIndex to 0 */}
               </div>
 
               {/* Mobile Cards */}
               <div className="mobile-cards">
-                {renderMobileCards(completedParticipants, false, 0)}{" "}
-                {/* Changed startIndex to 0 */}
+                {renderMobileCards(completedParticipants, false, 0)} {/* Changed startIndex to 0 */}
               </div>
             </div>
           )}
         </>
       )}
     </div>
-  );
-};
+  )
+}
 
-export default ParticipantList;
+export default ParticipantList
