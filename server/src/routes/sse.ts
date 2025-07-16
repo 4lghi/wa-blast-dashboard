@@ -1,38 +1,40 @@
-import { Router } from "express";
+// sse.ts
+import { Router } from "express"
 
-const router = Router();
+const router = Router()
 
-// Simpan client connections di memory (sementara)
-let clients: any[] = [];
+// Simpan semua koneksi SSE client di sini
+let clients: { id: number; res: any }[] = []
 
+// Endpoint utama untuk koneksi SSE
 router.get("/events", (req, res) => {
-  res.set({
-    "Content-Type": "text/event-stream",
-    "Cache-Control": "no-cache",
-    Connection: "keep-alive",
-  });
-  res.flushHeaders();
+  res.setHeader("Content-Type", "text/event-stream")
+  res.setHeader("Cache-Control", "no-cache")
+  res.setHeader("Connection", "keep-alive")
+  res.flushHeaders()
 
-  const clientId = Date.now();
-  const newClient = {
-    id: clientId,
-    res,
-  };
+  const clientId = Date.now()
+  const newClient = { id: clientId, res }
+  clients.push(newClient)
 
-  clients.push(newClient);
+  console.log(`🔗 Client connected: ${clientId}. Total: ${clients.length}`)
 
-  // Kirim event awal (optional)
-  res.write(`data: ${JSON.stringify({ message: "connected" })}\n\n`);
+  // Kirim event awal (opsional)
+  res.write(`data: ${JSON.stringify({ message: "connected" })}\n\n`)
 
+  // Saat koneksi ditutup
   req.on("close", () => {
-    clients = clients.filter((c) => c.id !== clientId);
-  });
-});
+    console.log(`❌ Client disconnected: ${clientId}`)
+    clients = clients.filter((client) => client.id !== clientId)
+  })
+})
 
+// Fungsi ini bisa dipanggil dari controller atau mana pun
 export const sendEventToAllClients = (data: any) => {
-  clients.forEach((client) =>
+  console.log(`📢 Sending SSE event to ${clients.length} clients...`)
+  clients.forEach((client) => {
     client.res.write(`data: ${JSON.stringify(data)}\n\n`)
-  );
-};
+  })
+}
 
-export default router;
+export default router
