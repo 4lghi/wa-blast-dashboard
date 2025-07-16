@@ -43,7 +43,10 @@ function App() {
     fetchData();
 
     // 🔴 Inisialisasi SSE
-    const eventSource = new EventSource("");
+    // 🔴 Ambil dari .env
+    const baseURL = import.meta.env.VITE_URL_NETWORK || import.meta.env.VITE_URL_LOCAL;
+    console.log("SSE baseURL:", baseURL);
+    const eventSource = new EventSource(`${baseURL}/events`);
 
     eventSource.onmessage = (event) => {
       try {

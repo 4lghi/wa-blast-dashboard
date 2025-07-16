@@ -23,8 +23,8 @@ app.use("/api/nasabah", nasabahBatch);
 // Endpoint untuk Server-Sent Events
 app.use(sseRoutes);
 
-const PORT = process.env.PORT;
-app.listen(3001,  "0.0.0.0", () => {
+const PORT = Number(process.env.PORT);
+app.listen(PORT, "0.0.0.0", () => {
   const os = require("os");
 
   // Ambil IP lokal (LAN)
