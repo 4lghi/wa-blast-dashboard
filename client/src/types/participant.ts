@@ -13,6 +13,7 @@ export interface Participant {
   verifiedAt?: string | null // nullable karena belum tentu sudah diverifikasi/ditolak
   user?: {
     id: string
+    name: string
     // Tambahkan field dari tabel `users` jika perlu
   }
 }

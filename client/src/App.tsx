@@ -43,7 +43,7 @@ function App() {
     fetchData();
 
     // 🔴 Inisialisasi SSE
-    const eventSource = new EventSource("http://localhost:3001/events");
+    const eventSource = new EventSource("");
 
     eventSource.onmessage = (event) => {
       try {
