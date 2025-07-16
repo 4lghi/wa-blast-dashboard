@@ -1,5 +1,7 @@
 import { Request, Response } from "express";
 import { PrismaClient } from "@prisma/client";
+import { sendEventToAllClients } from "../routes/sse"; // ✅ SSE imported
+
 
 const prisma = new PrismaClient();
 
@@ -94,12 +96,20 @@ export const updateNasabah = async (req: Request, res: Response) => {
       where: { id },
       data: updateData,
     });
+
+    // ✅ Kirim update ke semua client
+    sendEventToAllClients({
+      type: "nasabah-updated",
+      payload: nasabah,
+    });
+
     res.json(nasabah);
   } catch (error) {
     console.error(error);
     res.status(500).json({ error: "Gagal mengupdate nasabah." });
   }
 };
+
 
 
 // 🔹 DELETE nasabah
