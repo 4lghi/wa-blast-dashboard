@@ -1,6 +1,6 @@
 "use client"
 
-import { CheckCircle, XCircle, Clock } from "lucide-react"
+import { CheckCircle, XCircle, Clock, Users, AlertCircle, History } from "lucide-react"
 import type { Participant } from "../types/participant"
 
 interface ParticipantListProps {
@@ -66,6 +66,8 @@ const ParticipantList = ({ participants, onVerify, searchQuery }: ParticipantLis
   // Separate participants into pending and completed
   const pendingParticipants = participants.filter((p) => p.status === "pending")
   const completedParticipants = participants.filter((p) => p.status !== "pending")
+  const verifiedCount = completedParticipants.filter((p) => p.status === "verified").length
+  const rejectedCount = completedParticipants.filter((p) => p.status === "rejected").length
 
   const renderTable = (participantList: Participant[], showActions: boolean, startIndex = 0) => (
     <div className={`participants-table ${!showActions ? "no-actions" : ""}`}>
@@ -225,27 +227,43 @@ const ParticipantList = ({ participants, onVerify, searchQuery }: ParticipantLis
 
   return (
     <div className="participant-list">
-      <div className="list-header">
-        <h1>Semua Peserta</h1>
-        <p>
-          {searchQuery
-            ? `Menampilkan ${participants.length} peserta untuk "${searchQuery}"`
-            : `Kelola status verifikasi ${participants.length} peserta`}
-        </p>
+      {/* Stylish Header */}
+      <div className="stylish-header">
+        <div className="header-content">
+          <div className="header-icon">
+            <Users size={32} />
+          </div>
+          <div className="header-text">
+            <h1>Manajemen Peserta</h1>
+            <div className="header-stats">
+              <span className="total-badge">{participants.length} Total</span>
+              {searchQuery && <span className="search-badge">Pencarian: "{searchQuery}"</span>}
+            </div>
+          </div>
+        </div>
       </div>
 
       {participants.length === 0 ? (
         <div className="empty-state">
-          <p>{searchQuery ? `Tidak ada peserta dengan nama "${searchQuery}"` : "Belum ada data peserta"}</p>
+          <Users size={48} className="empty-icon" />
+          <p>{searchQuery ? `Tidak ditemukan "${searchQuery}"` : "Belum ada peserta terdaftar"}</p>
         </div>
       ) : (
         <>
           {/* Pending Participants Section */}
           {pendingParticipants.length > 0 && (
             <div className="table-section">
-              <div className="section-title">
-                <h2>Perlu Tindakan ({pendingParticipants.length})</h2>
-                <p>Peserta yang memerlukan verifikasi</p>
+              <div className="stylish-section-title pending">
+                <div className="section-icon">
+                  <AlertCircle size={24} />
+                </div>
+                <div className="section-info">
+                  <h2>Menunggu Verifikasi</h2>
+                  <div className="section-badges">
+                    <span className="count-badge pending">{pendingParticipants.length}</span>
+                    <span className="action-badge">Perlu Tindakan</span>
+                  </div>
+                </div>
               </div>
 
               {/* Desktop Table */}
@@ -259,20 +277,25 @@ const ParticipantList = ({ participants, onVerify, searchQuery }: ParticipantLis
           {/* Completed Participants Section */}
           {completedParticipants.length > 0 && (
             <div className="table-section">
-              <div className="section-title">
-                <h2>Sudah Selesai ({completedParticipants.length})</h2>
-                <p>Peserta yang sudah diverifikasi atau ditolak</p>
+              <div className="stylish-section-title completed">
+                <div className="section-icon">
+                  <History size={24} />
+                </div>
+                <div className="section-info">
+                  <h2>Riwayat Verifikasi</h2>
+                  <div className="section-badges">
+                    <span className="count-badge completed">{completedParticipants.length}</span>
+                    <span className="verified-badge">{verifiedCount} Terverifikasi</span>
+                    <span className="rejected-badge">{rejectedCount} Ditolak</span>
+                  </div>
+                </div>
               </div>
 
               {/* Desktop Table */}
-              <div className="desktop-table">
-                {renderTable(completedParticipants, false, 0)} {/* Changed startIndex to 0 */}
-              </div>
+              <div className="desktop-table">{renderTable(completedParticipants, false, 0)}</div>
 
               {/* Mobile Cards */}
-              <div className="mobile-cards">
-                {renderMobileCards(completedParticipants, false, 0)} {/* Changed startIndex to 0 */}
-              </div>
+              <div className="mobile-cards">{renderMobileCards(completedParticipants, false, 0)}</div>
             </div>
           )}
         </>
