@@ -24,6 +24,21 @@ app.use("/api/nasabah", nasabahBatch);
 app.use(sseRoutes);
 
 const PORT = process.env.PORT;
-app.listen(PORT, () => {
-  console.log(`🚀 Server ready at: http://localhost:${PORT}`);
+app.listen(3001,  "0.0.0.0", () => {
+  const os = require("os");
+
+  // Ambil IP lokal (LAN)
+  const interfaces = os.networkInterfaces();
+  let localIp = "localhost";
+  for (const name of Object.keys(interfaces)) {
+    for (const iface of interfaces[name] || []) {
+      if (iface.family === "IPv4" && !iface.internal) {
+        localIp = iface.address;
+      }
+    }
+  }
+
+  console.log(`🚀 Server running at:`);
+  console.log(`- Local:   http://localhost:${PORT}`);
+  console.log(`- Network: http://${localIp}:${PORT}`);
 });
