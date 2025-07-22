@@ -5,29 +5,35 @@ import usersRoutes from "./routes/users";
 import nasabahRoutes from "./routes/nasabah";
 import updateLanggananRoutes from "./routes/updateLanggananBatch";
 import nasabahBatch from "./routes/nasabahBatch";
-import sseRoutes from "./routes/sse"; // ✅ Import SSE routes
+import sseRoutes from "./routes/sse";
+import path from "path";
 
 dotenv.config();
+
 const app = express();
+const PORT = Number(process.env.PORT) || 3000;
+
 app.use(cors());
 app.use(express.json());
 
-// Endpoint untuk user
+// Serve static Vite build
+app.use(express.static(path.resolve(__dirname, "../../client/dist")));
+
+// API endpoints
 app.use("/api/users", usersRoutes);
-
-// Endpoint untuk nasabah
 app.use("/api/nasabah", nasabahRoutes);
-app.use("/api/nasabah", updateLanggananRoutes); // ✅ jangan khawatir ditulis 2x, Express akan cocokkan route-nya
+app.use("/api/nasabah", updateLanggananRoutes);
 app.use("/api/nasabah", nasabahBatch);
-
-// Endpoint untuk Server-Sent Events
 app.use(sseRoutes);
 
-const PORT = Number(process.env.PORT);
+// Fallback untuk route SPA
+app.get("*", (req, res) => {
+  res.sendFile(path.resolve(__dirname, "../../client/dist/index.html"));
+});
+
 app.listen(PORT, "0.0.0.0", () => {
   const os = require("os");
 
-  // Ambil IP lokal (LAN)
   const interfaces = os.networkInterfaces();
   let localIp = "localhost";
   for (const name of Object.keys(interfaces)) {
