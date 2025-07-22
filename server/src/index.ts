@@ -17,7 +17,7 @@ app.use(cors());
 app.use(express.json());
 
 // Serve static Vite build
-app.use(express.static(path.resolve(__dirname, "../../client/dist")));
+app.use(express.static(path.resolve(__dirname, "../../client/dist"))); 
 
 // API endpoints
 app.use("/api/users", usersRoutes);
@@ -25,11 +25,6 @@ app.use("/api/nasabah", nasabahRoutes);
 app.use("/api/nasabah", updateLanggananRoutes);
 app.use("/api/nasabah", nasabahBatch);
 app.use(sseRoutes);
-
-// Fallback untuk route SPA
-app.get("*", (req, res) => {
-  res.sendFile(path.resolve(__dirname, "../../client/dist/index.html"));
-});
 
 app.listen(PORT, "0.0.0.0", () => {
   const os = require("os");

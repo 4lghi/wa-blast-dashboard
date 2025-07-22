@@ -25,10 +25,6 @@ app.use("/api/nasabah", nasabah_1.default);
 app.use("/api/nasabah", updateLanggananBatch_1.default);
 app.use("/api/nasabah", nasabahBatch_1.default);
 app.use(sse_1.default);
-// Fallback untuk route SPA
-app.get("*", (req, res) => {
-    res.sendFile(path_1.default.resolve(__dirname, "../../client/dist/index.html"));
-});
 app.listen(PORT, "0.0.0.0", () => {
     const os = require("os");
     const interfaces = os.networkInterfaces();
